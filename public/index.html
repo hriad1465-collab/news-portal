@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Portal</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      color: #222;
+    }
+    header {
+      background: #123b65;
+      color: white;
+      padding: 22px 6%;
+    }
+    header h1 { margin: 0; }
+    nav {
+      background: #fff;
+      padding: 14px 6%;
+      border-bottom: 1px solid #ddd;
+    }
+    nav a {
+      color: #123b65;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+    #news-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .news-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px #00000010;
+    }
+    .news-card h2 { color: #123b65; }
+    .news-card a {
+      color: #087b45;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>News Portal</h1>
+    <p>সর্বশেষ সংবাদ এক জায়গায়</p>
+  </header>
+
+  <nav>
+    <a href="/">হোম</a>
+    <a href="/api/news">সকল সংবাদ API</a>
+  </nav>
+
+  <main>
+    <h2>সর্বশেষ সংবাদ</h2>
+    <div id="news-list">সংবাদ লোড হচ্ছে...</div>
+  </main>
+
+  <footer>© News Portal</footer>
+
+  <script>
+    async function loadNews() {
+      const container = document.getElementById('news-list');
+
+      try {
+        const response = await fetch('/api/news');
+        if (!response.ok) throw new Error('News load failed');
+
+        const result = await response.json();
+        const news = Array.isArray(result) ? result : (result.news || []);
+
+        if (!news.length) {
+          container.textContent = 'এখনো কোনো সংবাদ প্রকাশ করা হয়নি।';
+          return;
+        }
+
+        container.innerHTML = news.map(item => `
+          <article class="news-card">
+            <h2>${escapeHTML(item.title || '')}</h2>
+            <p>${escapeHTML(item.summary || '')}</p>
+            <p>বিভাগ: ${escapeHTML(item.category || '')}</p>
+            <a href="/news/${encodeURIComponent(item.slug || '')}">
+              বিস্তারিত পড়ুন
+            </a>
+          </article>
+        `).join('');
+      } catch (error) {
+        container.textContent = 'সংবাদ লোড করা যায়নি। পরে আবার চেষ্টা করুন।';
+      }
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]);
+    }
+
+    loadNews();
+  </script>
+</body>
+</html>
