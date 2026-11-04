@@ -24,8 +24,12 @@ const PORT = process.env.PORT || 10000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!JWT_SECRET) {
-  console.warn('WARNING: Set JWT_SECRET in environment');
+  console.error('ERROR: JWT_SECRET is missing in Environment Variables');
 }
+
+/* =========================
+   CLOUDINARY CONFIGURATION
+========================= */
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -58,6 +62,7 @@ async function initDB() {
   const c = await pool.getConnection();
 
   try {
+
     await c.query(`
       CREATE TABLE IF NOT EXISTS admins (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -87,27 +92,36 @@ async function initDB() {
       )
     `);
 
-    const adminEmail =
-      process.env.ADMIN_EMAIL || 'admin@example.com';
+    /* ADMIN ACCOUNT SYNC */
 
-    const [rows] = await c.query(
-      'SELECT id FROM admins WHERE email = ?',
-      [adminEmail]
+    const adminEmail = (
+      process.env.ADMIN_EMAIL ||
+      process.env.ADMIN_USERNAME ||
+      ''
+    ).trim().toLowerCase();
+
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (!adminEmail || !adminPassword) {
+      throw new Error(
+        'ADMIN_EMAIL/ADMIN_USERNAME অথবা ADMIN_PASSWORD Environment-এ সেট করুন'
+      );
+    }
+
+    const passwordHash = await bcrypt.hash(
+      adminPassword,
+      12
     );
 
-    if (!rows.length && process.env.ADMIN_PASSWORD) {
-      const hash = await bcrypt.hash(
-        process.env.ADMIN_PASSWORD,
-        12
-      );
+    await c.query(
+      `INSERT INTO admins (email, password_hash)
+       VALUES (?, ?)
+       ON DUPLICATE KEY UPDATE
+       password_hash = VALUES(password_hash)`,
+      [adminEmail, passwordHash]
+    );
 
-      await c.query(
-        'INSERT INTO admins(email,password_hash) VALUES(?,?)',
-        [adminEmail, hash]
-      );
-
-      console.log('Initial admin account created:', adminEmail);
-    }
+    console.log('Admin account synchronized:', adminEmail);
 
     console.log('TiDB database initialized successfully');
 
@@ -121,16 +135,21 @@ async function initDB() {
 ========================= */
 
 function auth(req, res, next) {
+
   const token = (req.headers.authorization || '')
     .replace(/^Bearer /, '');
 
   try {
+
     req.admin = jwt.verify(token, JWT_SECRET);
     next();
+
   } catch (e) {
+
     res.status(401).json({
       error: 'অনুগ্রহ করে Admin হিসেবে লগইন করুন'
     });
+
   }
 }
 
@@ -138,14 +157,21 @@ function auth(req, res, next) {
    FILE UPLOAD
 ========================= */
 
+const uploadDir = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const disk = multer({
-  dest: 'uploads/',
+  dest: uploadDir,
   limits: {
     fileSize: 100 * 1024 * 1024
   }
 });
 
 async function uploadFile(req, res, next) {
+
   if (!req.file) {
     return res.status(400).json({
       error: 'ফাইল নির্বাচন করুন'
@@ -153,7 +179,9 @@ async function uploadFile(req, res, next) {
   }
 
   try {
+
     if (process.env.CLOUDINARY_CLOUD_NAME) {
+
       const result = await cloudinary.uploader.upload(
         req.file.path,
         {
@@ -168,6 +196,7 @@ async function uploadFile(req, res, next) {
         url: result.secure_url,
         type: result.resource_type
       });
+
     }
 
     res.json({
@@ -179,13 +208,15 @@ async function uploadFile(req, res, next) {
     });
 
   } catch (e) {
+
     next(e);
+
   }
 }
 
 app.use(
   '/uploads',
-  express.static(path.join(__dirname, 'uploads'))
+  express.static(uploadDir)
 );
 
 /* =========================
@@ -193,44 +224,75 @@ app.use(
 ========================= */
 
 app.post('/api/admin/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
 
-    const [r] = await pool.query(
-      'SELECT * FROM admins WHERE email = ?',
+  try {
+
+    if (!JWT_SECRET) {
+      return res.status(500).json({
+        error: 'Server JWT_SECRET সেট করা নেই'
+      });
+    }
+
+    const email = String(
+      req.body.email || req.body.username || ''
+    ).trim().toLowerCase();
+
+    const password = req.body.password;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        error: 'Email এবং password দিন'
+      });
+    }
+
+    const [rows] = await pool.query(
+      'SELECT * FROM admins WHERE email = ? LIMIT 1',
       [email]
     );
 
     if (
-      !r.length ||
-      !await bcrypt.compare(password, r[0].password_hash)
+      !rows.length ||
+      !await bcrypt.compare(
+        String(password),
+        rows[0].password_hash
+      )
     ) {
+
       return res.status(401).json({
         error: 'Email বা password ভুল'
       });
+
     }
 
+    const token = jwt.sign(
+      {
+        id: rows[0].id,
+        email: rows[0].email
+      },
+      JWT_SECRET,
+      {
+        expiresIn: '12h'
+      }
+    );
+
+    console.log('Admin login successful:', email);
+
     res.json({
-      token: jwt.sign(
-        {
-          id: r[0].id,
-          email: r[0].email
-        },
-        JWT_SECRET,
-        {
-          expiresIn: '12h'
-        }
-      ),
-      email: r[0].email
+      success: true,
+      token,
+      email: rows[0].email
     });
 
   } catch (e) {
+
     console.error('Login error:', e);
 
     res.status(500).json({
       error: 'Login failed'
     });
+
   }
+
 });
 
 /* =========================
@@ -238,7 +300,9 @@ app.post('/api/admin/login', async (req, res) => {
 ========================= */
 
 app.get('/api/news', async (req, res) => {
+
   try {
+
     const {
       category,
       q,
@@ -272,36 +336,44 @@ app.get('/api/news', async (req, res) => {
     res.json(rows);
 
   } catch (e) {
+
     console.error('News load error:', e);
 
     res.status(500).json({
       error: 'News load failed'
     });
+
   }
+
 });
 
 app.get('/api/news/:slug', async (req, res) => {
+
   try {
-    const [r] = await pool.query(
+
+    const [rows] = await pool.query(
       "SELECT * FROM news WHERE slug=? AND status='published'",
       [req.params.slug]
     );
 
-    if (!r.length) {
+    if (!rows.length) {
       return res.status(404).json({
         error: 'News not found'
       });
     }
 
-    res.json(r[0]);
+    res.json(rows[0]);
 
   } catch (e) {
+
     console.error('News details error:', e);
 
     res.status(500).json({
       error: 'News load failed'
     });
+
   }
+
 });
 
 /* =========================
@@ -309,18 +381,25 @@ app.get('/api/news/:slug', async (req, res) => {
 ========================= */
 
 app.get('/api/admin/news', auth, async (req, res) => {
+
   try {
-    const [r] = await pool.query(
+
+    const [rows] = await pool.query(
       'SELECT * FROM news ORDER BY created_at DESC'
     );
 
-    res.json(r);
+    res.json(rows);
 
   } catch (e) {
+
+    console.error(e);
+
     res.status(500).json({
       error: 'News load failed'
     });
+
   }
+
 });
 
 app.post(
@@ -330,10 +409,14 @@ app.post(
   uploadFile
 );
 
-/* CREATE NEWS */
+/* =========================
+   CREATE NEWS
+========================= */
 
 app.post('/api/admin/news', auth, async (req, res) => {
+
   try {
+
     const n = req.body;
 
     const slug =
@@ -366,18 +449,25 @@ app.post('/api/admin/news', auth, async (req, res) => {
     });
 
   } catch (e) {
+
     console.error('News save error:', e);
 
     res.status(500).json({
       error: 'News save failed: ' + e.message
     });
+
   }
+
 });
 
-/* UPDATE NEWS */
+/* =========================
+   UPDATE NEWS
+========================= */
 
 app.put('/api/admin/news/:id', auth, async (req, res) => {
+
   try {
+
     const n = req.body;
 
     await pool.query(
@@ -402,18 +492,25 @@ app.put('/api/admin/news/:id', auth, async (req, res) => {
     });
 
   } catch (e) {
+
     console.error('News update error:', e);
 
     res.status(500).json({
       error: 'Update failed'
     });
+
   }
+
 });
 
-/* DELETE NEWS */
+/* =========================
+   DELETE NEWS
+========================= */
 
 app.delete('/api/admin/news/:id', auth, async (req, res) => {
+
   try {
+
     await pool.query(
       'DELETE FROM news WHERE id=?',
       [req.params.id]
@@ -424,10 +521,15 @@ app.delete('/api/admin/news/:id', auth, async (req, res) => {
     });
 
   } catch (e) {
+
+    console.error('News delete error:', e);
+
     res.status(500).json({
       error: 'Delete failed'
     });
+
   }
+
 });
 
 /* =========================
@@ -435,7 +537,9 @@ app.delete('/api/admin/news/:id', auth, async (req, res) => {
 ========================= */
 
 app.get('/api/health', async (req, res) => {
+
   try {
+
     await pool.query('SELECT 1');
 
     res.json({
@@ -444,13 +548,16 @@ app.get('/api/health', async (req, res) => {
     });
 
   } catch (e) {
+
     console.error('Health check error:', e);
 
     res.status(500).json({
       ok: false,
       database: 'error'
     });
+
   }
+
 });
 
 /* =========================
@@ -458,9 +565,11 @@ app.get('/api/health', async (req, res) => {
 ========================= */
 
 app.get('*', (req, res) => {
+
   res.sendFile(
     path.join(__dirname, 'public', 'index.html')
   );
+
 });
 
 /* =========================
@@ -468,24 +577,41 @@ app.get('*', (req, res) => {
 ========================= */
 
 app.use((err, req, res, next) => {
+
   console.error(err);
 
   res.status(500).json({
     error: 'Server error'
   });
+
 });
 
 /* =========================
    START SERVER
 ========================= */
 
-initDB()
-  .then(() => {
+async function startServer() {
+
+  try {
+
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET Environment Variable missing');
+    }
+
+    await initDB();
+
     app.listen(PORT, () => {
-      console.log('Server running on ' + PORT);
+      console.log('Server running on port ' + PORT);
     });
-  })
-  .catch(e => {
-    console.error('DB init error', e);
+
+  } catch (e) {
+
+    console.error('Server startup error:', e);
+
     process.exit(1);
-  });
+
+  }
+
+}
+
+startServer();
