@@ -63,6 +63,7 @@ async function initDB() {
 
   try {
 
+    // ADMIN TABLE
     await c.query(`
       CREATE TABLE IF NOT EXISTS admins (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -72,6 +73,7 @@ async function initDB() {
       )
     `);
 
+    // NEWS TABLE
     await c.query(`
       CREATE TABLE IF NOT EXISTS news (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -92,7 +94,22 @@ async function initDB() {
       )
     `);
 
-    /* ADMIN ACCOUNT SYNC */
+    // OLD DATABASE MIGRATION
+    // summary column না থাকলে তৈরি করবে
+
+    const [summaryColumn] = await c.query(`
+      SHOW COLUMNS FROM news LIKE 'summary'
+    `);
+
+    if (summaryColumn.length === 0) {
+      await c.query(`
+        ALTER TABLE news ADD COLUMN summary TEXT
+      `);
+
+      console.log('summary column successfully added');
+    }
+
+    // ADMIN ACCOUNT SYNC
 
     const adminEmail = (
       process.env.ADMIN_EMAIL ||
@@ -122,7 +139,6 @@ async function initDB() {
     );
 
     console.log('Admin account synchronized:', adminEmail);
-
     console.log('TiDB database initialized successfully');
 
   } finally {
@@ -214,10 +230,7 @@ async function uploadFile(req, res, next) {
   }
 }
 
-app.use(
-  '/uploads',
-  express.static(uploadDir)
-);
+app.use('/uploads', express.static(uploadDir));
 
 /* =========================
    ADMIN LOGIN API
@@ -257,11 +270,9 @@ app.post('/api/admin/login', async (req, res) => {
         rows[0].password_hash
       )
     ) {
-
       return res.status(401).json({
         error: 'Email বা password ভুল'
       });
-
     }
 
     const token = jwt.sign(
@@ -377,7 +388,7 @@ app.get('/api/news/:slug', async (req, res) => {
 });
 
 /* =========================
-   ADMIN NEWS API
+   ADMIN NEWS LIST API
 ========================= */
 
 app.get('/api/admin/news', auth, async (req, res) => {
@@ -392,7 +403,7 @@ app.get('/api/admin/news', auth, async (req, res) => {
 
   } catch (e) {
 
-    console.error(e);
+    console.error('Admin news load error:', e);
 
     res.status(500).json({
       error: 'News load failed'
@@ -402,6 +413,10 @@ app.get('/api/admin/news', auth, async (req, res) => {
 
 });
 
+/* =========================
+   ADMIN FILE UPLOAD API
+========================= */
+
 app.post(
   '/api/admin/upload',
   auth,
@@ -410,7 +425,7 @@ app.post(
 );
 
 /* =========================
-   CREATE NEWS
+   CREATE / PUBLISH NEWS
 ========================= */
 
 app.post('/api/admin/news', auth, async (req, res) => {
@@ -419,8 +434,20 @@ app.post('/api/admin/news', auth, async (req, res) => {
 
     const n = req.body;
 
+    if (!n.title || !String(n.title).trim()) {
+      return res.status(400).json({
+        error: 'নিউজের শিরোনাম লিখুন'
+      });
+    }
+
+    if (!n.content || !String(n.content).trim()) {
+      return res.status(400).json({
+        error: 'নিউজের বিস্তারিত লিখুন'
+      });
+    }
+
     const slug =
-      slugify(n.title, {
+      slugify(String(n.title), {
         lower: true,
         strict: true
       }) + '-' + Date.now();
@@ -431,21 +458,25 @@ app.post('/api/admin/news', auth, async (req, res) => {
       cover_url,video_url,status)
       VALUES(?,?,?,?,?,?,?,?,?)`,
       [
-        n.title,
+        String(n.title).trim(),
         slug,
-        n.summary || '',
+        n.summary || String(n.content).substring(0, 200),
         n.content || '',
         n.category || 'জাতীয়',
         n.author || 'ডেস্ক রিপোর্ট',
-        n.cover_url || '',
+        n.cover_url || n.image || '',
         n.video_url || '',
-        n.status || 'draft'
+        n.status === 'draft' ? 'draft' : 'published'
       ]
     );
 
+    console.log('News published:', r.insertId);
+
     res.json({
+      success: true,
       id: r.insertId,
-      slug
+      slug: slug,
+      message: 'নিউজ সফলভাবে প্রকাশ হয়েছে'
     });
 
   } catch (e) {
@@ -470,25 +501,51 @@ app.put('/api/admin/news/:id', auth, async (req, res) => {
 
     const n = req.body;
 
-    await pool.query(
-      `UPDATE news SET title=?,summary=?,content=?,
-      category=?,author=?,cover_url=?,video_url=?,status=?
+    if (!n.title || !String(n.title).trim()) {
+      return res.status(400).json({
+        error: 'নিউজের শিরোনাম লিখুন'
+      });
+    }
+
+    if (!n.content || !String(n.content).trim()) {
+      return res.status(400).json({
+        error: 'নিউজের বিস্তারিত লিখুন'
+      });
+    }
+
+    const [result] = await pool.query(
+      `UPDATE news SET
+      title=?,
+      summary=?,
+      content=?,
+      category=?,
+      author=?,
+      cover_url=?,
+      video_url=?,
+      status=?
       WHERE id=?`,
       [
-        n.title,
-        n.summary || '',
+        String(n.title).trim(),
+        n.summary || String(n.content).substring(0, 200),
         n.content || '',
         n.category || 'জাতীয়',
         n.author || 'ডেস্ক রিপোর্ট',
-        n.cover_url || '',
+        n.cover_url || n.image || '',
         n.video_url || '',
-        n.status || 'draft',
+        n.status === 'draft' ? 'draft' : 'published',
         req.params.id
       ]
     );
 
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        error: 'নিউজটি পাওয়া যায়নি'
+      });
+    }
+
     res.json({
-      ok: true
+      success: true,
+      message: 'নিউজ সফলভাবে আপডেট হয়েছে'
     });
 
   } catch (e) {
@@ -496,7 +553,7 @@ app.put('/api/admin/news/:id', auth, async (req, res) => {
     console.error('News update error:', e);
 
     res.status(500).json({
-      error: 'Update failed'
+      error: 'Update failed: ' + e.message
     });
 
   }
@@ -511,13 +568,20 @@ app.delete('/api/admin/news/:id', auth, async (req, res) => {
 
   try {
 
-    await pool.query(
+    const [result] = await pool.query(
       'DELETE FROM news WHERE id=?',
       [req.params.id]
     );
 
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        error: 'নিউজটি পাওয়া যায়নি'
+      });
+    }
+
     res.json({
-      ok: true
+      success: true,
+      message: 'নিউজ সফলভাবে মুছে ফেলা হয়েছে'
     });
 
   } catch (e) {
@@ -525,7 +589,7 @@ app.delete('/api/admin/news/:id', auth, async (req, res) => {
     console.error('News delete error:', e);
 
     res.status(500).json({
-      error: 'Delete failed'
+      error: 'Delete failed: ' + e.message
     });
 
   }
@@ -564,7 +628,12 @@ app.get('/api/health', async (req, res) => {
    FRONTEND
 ========================= */
 
-app.get('*', (req, res) => {
+// Express 4 ও Express 5 উভয়ের জন্য
+app.get(/.*/, (req, res, next) => {
+
+  if (req.path.startsWith('/api/')) {
+    return next();
+  }
 
   res.sendFile(
     path.join(__dirname, 'public', 'index.html')
@@ -578,10 +647,10 @@ app.get('*', (req, res) => {
 
 app.use((err, req, res, next) => {
 
-  console.error(err);
+  console.error('Server error:', err);
 
   res.status(500).json({
-    error: 'Server error'
+    error: 'Server error: ' + err.message
   });
 
 });
