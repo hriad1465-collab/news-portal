@@ -17,30 +17,19 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 10000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
-if (!JWT_SECRET) {
-  console.error('ERROR: JWT_SECRET is missing in Environment Variables');
-}
-
-/* =========================
-   CLOUDINARY CONFIGURATION
-========================= */
-
+/* CLOUDINARY */
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-/* =========================
-   TIDB DATABASE CONNECTION
-========================= */
-
+/* DATABASE */
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT || 4000),
@@ -49,21 +38,14 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 5,
-  ssl: {
-    minVersion: 'TLSv1.2'
-  }
+  ssl: { minVersion: 'TLSv1.2' }
 });
 
-/* =========================
-   DATABASE INITIALIZATION
-========================= */
-
+/* DATABASE INITIALIZATION */
 async function initDB() {
   const c = await pool.getConnection();
 
   try {
-
-    // ADMIN TABLE
     await c.query(`
       CREATE TABLE IF NOT EXISTS admins (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -73,7 +55,6 @@ async function initDB() {
       )
     `);
 
-    // NEWS TABLE
     await c.query(`
       CREATE TABLE IF NOT EXISTS news (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -94,24 +75,35 @@ async function initDB() {
       )
     `);
 
-    // OLD DATABASE MIGRATION
-    // summary column না থাকলে তৈরি করবে
+    /* OLD DATABASE COLUMN MIGRATION */
+    const migrations = [
+      ['summary', 'TEXT NULL'],
+      ['content', 'LONGTEXT NULL'],
+      ['category', "VARCHAR(100) DEFAULT 'জাতীয়'"],
+      ['author', "VARCHAR(150) DEFAULT 'ডেস্ক রিপোর্ট'"],
+      ['cover_url', 'TEXT NULL'],
+      ['video_url', 'TEXT NULL'],
+      ['status', "ENUM('draft','published') DEFAULT 'draft'"],
+      ['created_at', 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP'],
+      ['updated_at', 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP']
+    ];
 
-    const [summaryColumn] = await c.query(`
-      SHOW COLUMNS FROM news LIKE 'summary'
-    `);
+    for (const [column, definition] of migrations) {
+      const [found] = await c.query(
+        'SHOW COLUMNS FROM news LIKE ?',
+        [column]
+      );
 
-    if (summaryColumn.length === 0) {
-      await c.query(`
-        ALTER TABLE news ADD COLUMN summary TEXT
-      `);
-
-      console.log('summary column successfully added');
+      if (found.length === 0) {
+        await c.query(
+          `ALTER TABLE news ADD COLUMN \`${column}\` ${definition}`
+        );
+        console.log(`Added news.${column}`);
+      }
     }
 
-    // ADMIN ACCOUNT SYNC
-
-    const adminEmail = (
+    /* ADMIN ACCOUNT */
+    const adminEmail = String(
       process.env.ADMIN_EMAIL ||
       process.env.ADMIN_USERNAME ||
       ''
@@ -120,59 +112,47 @@ async function initDB() {
     const adminPassword = process.env.ADMIN_PASSWORD;
 
     if (!adminEmail || !adminPassword) {
-      throw new Error(
-        'ADMIN_EMAIL/ADMIN_USERNAME অথবা ADMIN_PASSWORD Environment-এ সেট করুন'
-      );
+      throw new Error('ADMIN_USERNAME/ADMIN_EMAIL এবং ADMIN_PASSWORD সেট করুন');
     }
 
-    const passwordHash = await bcrypt.hash(
-      adminPassword,
-      12
-    );
+    const passwordHash = await bcrypt.hash(adminPassword, 12);
 
     await c.query(
-      `INSERT INTO admins (email, password_hash)
-       VALUES (?, ?)
+      `INSERT INTO admins (email,password_hash)
+       VALUES (?,?)
        ON DUPLICATE KEY UPDATE
-       password_hash = VALUES(password_hash)`,
+       password_hash=VALUES(password_hash)`,
       [adminEmail, passwordHash]
     );
 
-    console.log('Admin account synchronized:', adminEmail);
-    console.log('TiDB database initialized successfully');
+    console.log('Admin synchronized:', adminEmail);
+    console.log('Database initialized');
 
   } finally {
     c.release();
   }
 }
 
-/* =========================
-   ADMIN AUTHENTICATION
-========================= */
-
+/* AUTHENTICATION */
 function auth(req, res, next) {
+  if (!JWT_SECRET) {
+    return res.status(500).json({ error: 'JWT_SECRET missing' });
+  }
 
   const token = (req.headers.authorization || '')
-    .replace(/^Bearer /, '');
+    .replace(/^Bearer\s+/i, '');
 
   try {
-
     req.admin = jwt.verify(token, JWT_SECRET);
     next();
-
-  } catch (e) {
-
+  } catch {
     res.status(401).json({
-      error: 'অনুগ্রহ করে Admin হিসেবে লগইন করুন'
+      error: 'অনুগ্রহ করে Admin Login করুন'
     });
-
   }
 }
 
-/* =========================
-   FILE UPLOAD
-========================= */
-
+/* FILE UPLOAD */
 const uploadDir = path.join(__dirname, 'uploads');
 
 if (!fs.existsSync(uploadDir)) {
@@ -181,23 +161,16 @@ if (!fs.existsSync(uploadDir)) {
 
 const disk = multer({
   dest: uploadDir,
-  limits: {
-    fileSize: 100 * 1024 * 1024
-  }
+  limits: { fileSize: 100 * 1024 * 1024 }
 });
 
 async function uploadFile(req, res, next) {
-
   if (!req.file) {
-    return res.status(400).json({
-      error: 'ফাইল নির্বাচন করুন'
-    });
+    return res.status(400).json({ error: 'ফাইল নির্বাচন করুন' });
   }
 
   try {
-
     if (process.env.CLOUDINARY_CLOUD_NAME) {
-
       const result = await cloudinary.uploader.upload(
         req.file.path,
         {
@@ -212,40 +185,25 @@ async function uploadFile(req, res, next) {
         url: result.secure_url,
         type: result.resource_type
       });
-
     }
 
     res.json({
       url: '/uploads/' + req.file.filename,
       type: req.file.mimetype.startsWith('video/')
         ? 'video'
-        : 'image',
-      warning: 'Local upload: Render restart/redeploy এ ফাইল মুছে যেতে পারে। Cloudinary configure করুন।'
+        : 'image'
     });
 
   } catch (e) {
-
     next(e);
-
   }
 }
 
 app.use('/uploads', express.static(uploadDir));
 
-/* =========================
-   ADMIN LOGIN API
-========================= */
-
+/* ADMIN LOGIN */
 app.post('/api/admin/login', async (req, res) => {
-
   try {
-
-    if (!JWT_SECRET) {
-      return res.status(500).json({
-        error: 'Server JWT_SECRET সেট করা নেই'
-      });
-    }
-
     const email = String(
       req.body.email || req.body.username || ''
     ).trim().toLowerCase();
@@ -259,7 +217,7 @@ app.post('/api/admin/login', async (req, res) => {
     }
 
     const [rows] = await pool.query(
-      'SELECT * FROM admins WHERE email = ? LIMIT 1',
+      'SELECT * FROM admins WHERE email=? LIMIT 1',
       [email]
     );
 
@@ -271,7 +229,7 @@ app.post('/api/admin/login', async (req, res) => {
       )
     ) {
       return res.status(401).json({
-        error: 'Email বা password ভুল'
+        error: 'Email অথবা password ভুল'
       });
     }
 
@@ -281,12 +239,8 @@ app.post('/api/admin/login', async (req, res) => {
         email: rows[0].email
       },
       JWT_SECRET,
-      {
-        expiresIn: '12h'
-      }
+      { expiresIn: '12h' }
     );
-
-    console.log('Admin login successful:', email);
 
     res.json({
       success: true,
@@ -295,30 +249,17 @@ app.post('/api/admin/login', async (req, res) => {
     });
 
   } catch (e) {
-
     console.error('Login error:', e);
-
     res.status(500).json({
-      error: 'Login failed'
+      error: 'Login failed: ' + e.message
     });
-
   }
-
 });
 
-/* =========================
-   PUBLIC NEWS API
-========================= */
-
+/* PUBLIC NEWS */
 app.get('/api/news', async (req, res) => {
-
   try {
-
-    const {
-      category,
-      q,
-      limit = '50'
-    } = req.query;
+    const { category, q, limit = '50' } = req.query;
 
     let sql = `
       SELECT id,title,slug,summary,content,category,
@@ -326,97 +267,68 @@ app.get('/api/news', async (req, res) => {
       FROM news WHERE status='published'
     `;
 
-    const p = [];
+    const params = [];
 
     if (category) {
       sql += ' AND category=?';
-      p.push(category);
+      params.push(category);
     }
 
     if (q) {
       sql += ' AND (title LIKE ? OR summary LIKE ?)';
-      p.push('%' + q + '%', '%' + q + '%');
+      params.push('%' + q + '%', '%' + q + '%');
     }
 
-    sql +=
-      ' ORDER BY created_at DESC LIMIT ' +
+    sql += ' ORDER BY created_at DESC LIMIT ' +
       Math.min(100, Math.max(1, Number(limit) || 50));
 
-    const [rows] = await pool.query(sql, p);
-
+    const [rows] = await pool.query(sql, params);
     res.json(rows);
 
   } catch (e) {
-
-    console.error('News load error:', e);
-
+    console.error(e);
     res.status(500).json({
-      error: 'News load failed'
+      error: 'News load failed: ' + e.message
     });
-
   }
-
 });
 
 app.get('/api/news/:slug', async (req, res) => {
-
   try {
-
     const [rows] = await pool.query(
       "SELECT * FROM news WHERE slug=? AND status='published'",
       [req.params.slug]
     );
 
     if (!rows.length) {
-      return res.status(404).json({
-        error: 'News not found'
-      });
+      return res.status(404).json({ error: 'News not found' });
     }
 
     res.json(rows[0]);
 
   } catch (e) {
-
-    console.error('News details error:', e);
-
     res.status(500).json({
-      error: 'News load failed'
+      error: 'News load failed: ' + e.message
     });
-
   }
-
 });
 
-/* =========================
-   ADMIN NEWS LIST API
-========================= */
-
+/* ADMIN NEWS LIST */
 app.get('/api/admin/news', auth, async (req, res) => {
-
   try {
-
     const [rows] = await pool.query(
       'SELECT * FROM news ORDER BY created_at DESC'
     );
-
     res.json(rows);
 
   } catch (e) {
-
-    console.error('Admin news load error:', e);
-
     res.status(500).json({
-      error: 'News load failed'
+      error: 'News load failed: ' + e.message
     });
-
   }
-
 });
 
-/* =========================
-   ADMIN FILE UPLOAD API
-========================= */
-
+/* UPLOAD API */
 app.post(
   '/api/admin/upload',
   auth,
@@ -424,15 +336,10 @@ app.post(
   uploadFile
 );
 
-/* =========================
-   CREATE / PUBLISH NEWS
-========================= */
-
+/* CREATE NEWS */
 app.post('/api/admin/news', auth, async (req, res) => {
-
   try {
-
-    const n = req.body;
+    const n = req.body || {};
 
     if (!n.title || !String(n.title).trim()) {
       return res.status(400).json({
@@ -447,12 +354,12 @@ app.post('/api/admin/news', auth, async (req, res) => {
     }
 
     const slug =
-      slugify(String(n.title), {
+      (slugify(String(n.title), {
         lower: true,
         strict: true
-      }) + '-' + Date.now();
+      }) || 'news') + '-' + Date.now();
 
-    const [r] = await pool.query(
+    const [result] = await pool.query(
       `INSERT INTO news
       (title,slug,summary,content,category,author,
       cover_url,video_url,status)
@@ -461,7 +368,7 @@ app.post('/api/admin/news', auth, async (req, res) => {
         String(n.title).trim(),
         slug,
         n.summary || String(n.content).substring(0, 200),
-        n.content || '',
+        n.content,
         n.category || 'জাতীয়',
         n.author || 'ডেস্ক রিপোর্ট',
         n.cover_url || n.image || '',
@@ -470,36 +377,25 @@ app.post('/api/admin/news', auth, async (req, res) => {
       ]
     );
 
-    console.log('News published:', r.insertId);
-
     res.json({
       success: true,
-      id: r.insertId,
-      slug: slug,
+      id: result.insertId,
+      slug,
       message: 'নিউজ সফলভাবে প্রকাশ হয়েছে'
     });
 
   } catch (e) {
-
     console.error('News save error:', e);
-
     res.status(500).json({
       error: 'News save failed: ' + e.message
     });
-
   }
-
 });
 
-/* =========================
-   UPDATE NEWS
-========================= */
-
+/* UPDATE NEWS */
 app.put('/api/admin/news/:id', auth, async (req, res) => {
-
   try {
-
-    const n = req.body;
+    const n = req.body || {};
 
     if (!n.title || !String(n.title).trim()) {
       return res.status(400).json({
@@ -514,20 +410,13 @@ app.put('/api/admin/news/:id', auth, async (req, res) => {
     }
 
     const [result] = await pool.query(
-      `UPDATE news SET
-      title=?,
-      summary=?,
-      content=?,
-      category=?,
-      author=?,
-      cover_url=?,
-      video_url=?,
-      status=?
+      `UPDATE news SET title=?,summary=?,content=?,
+      category=?,author=?,cover_url=?,video_url=?,status=?
       WHERE id=?`,
       [
         String(n.title).trim(),
         n.summary || String(n.content).substring(0, 200),
-        n.content || '',
+        n.content,
         n.category || 'জাতীয়',
         n.author || 'ডেস্ক রিপোর্ট',
         n.cover_url || n.image || '',
@@ -537,7 +426,7 @@ app.put('/api/admin/news/:id', auth, async (req, res) => {
       ]
     );
 
-    if (result.affectedRows === 0) {
+    if (!result.affectedRows) {
       return res.status(404).json({
         error: 'নিউজটি পাওয়া যায়নি'
       });
@@ -545,35 +434,26 @@ app.put('/api/admin/news/:id', auth, async (req, res) => {
 
     res.json({
       success: true,
-      message: 'নিউজ সফলভাবে আপডেট হয়েছে'
+      message: 'নিউজ আপডেট হয়েছে'
     });
 
   } catch (e) {
-
-    console.error('News update error:', e);
-
+    console.error('Update error:', e);
     res.status(500).json({
       error: 'Update failed: ' + e.message
     });
-
   }
-
 });
 
-/* =========================
-   DELETE NEWS
-========================= */
-
+/* DELETE NEWS */
 app.delete('/api/admin/news/:id', auth, async (req, res) => {
-
   try {
-
     const [result] = await pool.query(
       'DELETE FROM news WHERE id=?',
       [req.params.id]
     );
 
-    if (result.affectedRows === 0) {
+    if (!result.affectedRows) {
       return res.status(404).json({
         error: 'নিউজটি পাওয়া যায়নি'
       });
@@ -581,88 +461,52 @@ app.delete('/api/admin/news/:id', auth, async (req, res) => {
 
     res.json({
       success: true,
-      message: 'নিউজ সফলভাবে মুছে ফেলা হয়েছে'
+      message: 'নিউজ মুছে ফেলা হয়েছে'
     });
 
   } catch (e) {
-
-    console.error('News delete error:', e);
-
     res.status(500).json({
       error: 'Delete failed: ' + e.message
     });
-
   }
-
 });
 
-/* =========================
-   HEALTH CHECK
-========================= */
-
+/* HEALTH CHECK */
 app.get('/api/health', async (req, res) => {
-
   try {
-
     await pool.query('SELECT 1');
-
     res.json({
       ok: true,
       database: 'connected'
     });
-
   } catch (e) {
-
-    console.error('Health check error:', e);
-
     res.status(500).json({
       ok: false,
       database: 'error'
     });
-
   }
-
 });
 
-/* =========================
-   FRONTEND
-========================= */
-
-// Express 4 ও Express 5 উভয়ের জন্য
+/* FRONTEND */
 app.get(/.*/, (req, res, next) => {
-
-  if (req.path.startsWith('/api/')) {
-    return next();
-  }
+  if (req.path.startsWith('/api/')) return next();
 
   res.sendFile(
     path.join(__dirname, 'public', 'index.html')
   );
-
 });
 
-/* =========================
-   ERROR HANDLER
-========================= */
-
+/* ERROR HANDLER */
 app.use((err, req, res, next) => {
-
-  console.error('Server error:', err);
-
+  console.error(err);
   res.status(500).json({
     error: 'Server error: ' + err.message
   });
-
 });
 
-/* =========================
-   START SERVER
-========================= */
-
+/* START SERVER */
 async function startServer() {
-
   try {
-
     if (!JWT_SECRET) {
       throw new Error('JWT_SECRET Environment Variable missing');
     }
@@ -674,13 +518,9 @@ async function startServer() {
     });
 
   } catch (e) {
-
     console.error('Server startup error:', e);
-
     process.exit(1);
-
   }
-
 }
 
 startServer();
