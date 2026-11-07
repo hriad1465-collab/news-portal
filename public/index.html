@@ -1,222 +1,240 @@
-
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>প্রতিদিন বাংলাদেশ | Pratidin Bangladesh</title>
-<meta name="description" content="প্রতিদিন বাংলাদেশের সর্বশেষ সংবাদ।">
+<!-- NEWS DETAILS, ADVERTISEMENT & SOCIAL SHARE -->
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Hind Siliguri',Arial,sans-serif;background:#f4f5f7;color:#222}
-.container{width:92%;max-width:1200px;margin:auto}
-.topbar{background:#151515;color:white;padding:7px 0;font-size:13px}
-.topbar .container{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.brand{background:white;padding:22px 0;border-bottom:1px solid #eee}
-.brand .container{display:flex;align-items:center;justify-content:space-between;gap:15px}
-.logo h1{color:#d71920;font-size:36px;font-weight:800;line-height:1.2}
-.logo p{color:#555;font-size:14px}
-.header-ad{background:#f1f1f1;padding:15px 30px;color:#777;text-align:center;border-radius:5px}
-nav{background:#d71920}
-nav .container{display:flex;align-items:center;flex-wrap:wrap}
-nav a{color:white;text-decoration:none;padding:13px 15px;font-weight:600}
-nav a:hover{background:#a90e15}
-.breaking{background:white;margin-top:18px;display:flex;align-items:center;overflow:hidden;border:1px solid #eee}
-.breaking strong{background:#d71920;color:white;padding:10px 17px;white-space:nowrap}
-.breaking marquee{padding:9px;color:#333}
-.hero{margin-top:25px}
-.section-title{border-left:5px solid #d71920;padding-left:12px;margin-bottom:18px;font-size:23px;font-weight:700}
-#news-list{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.news-card{background:white;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px #0000000d;transition:.25s}
-.news-card:hover{transform:translateY(-4px);box-shadow:0 5px 20px #00000015}
-.news-image{width:100%;height:210px;object-fit:cover;display:block;background:#eee}
-.news-content{padding:17px}
-.category{display:inline-block;background:#fff0f0;color:#d71920;padding:3px 10px;border-radius:3px;font-size:13px;font-weight:600;margin-bottom:10px}
-.news-card h2{font-size:20px;line-height:1.5;margin-bottom:10px;color:#222}
-.news-card p{color:#666;font-size:15px;line-height:1.7;margin-bottom:12px}
-.news-card a{display:inline-block;color:#d71920;text-decoration:none;font-weight:700}
-.news-card a:hover{color:#111}
-.empty{grid-column:1/-1;text-align:center;padding:45px;background:white;border-radius:8px}
-footer{background:#171717;color:#ddd;margin-top:45px;padding:35px 0}
-.footer-content{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px}
-.footer-logo{color:white;font-size:27px;font-weight:800}
-.footer-content p{line-height:1.8}
-.copyright{border-top:1px solid #444;margin-top:25px;padding-top:18px;text-align:center;font-size:13px}
-@media(max-width:850px){
-#news-list{grid-template-columns:repeat(2,1fr)}
-.header-ad{display:none}
+.news-detail-page {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0,0,0,.08);
+  font-family: Arial, "Noto Sans Bengali", sans-serif;
+  color: #222;
 }
-@media(max-width:550px){
-.container{width:94%}
-.logo h1{font-size:27px}
-nav a{padding:10px;font-size:14px}
-#news-list{grid-template-columns:1fr}
-.news-image{height:220px}
-.news-card h2{font-size:19px}
-.topbar .container{justify-content:center}
+
+.news-detail-page h1 {
+  font-size: 30px;
+  line-height: 1.6;
+  margin: 15px 0;
+}
+
+.news-detail-page .news-meta {
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.news-detail-page .news-cover {
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #eee;
+}
+
+.news-detail-page .news-content {
+  font-size: 19px;
+  line-height: 2;
+  white-space: pre-wrap;
+  margin-top: 25px;
+}
+
+.news-ad {
+  background: #f5f5f5;
+  border: 1px dashed #aaa;
+  padding: 25px 10px;
+  text-align: center;
+  margin: 25px 0;
+  color: #777;
+  min-height: 80px;
+}
+
+.news-share {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 25px 0;
+}
+
+.news-share a,
+.news-share button {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.facebook-share { background: #1877f2; }
+.whatsapp-share { background: #168b45; }
+.copy-share { background: #555; }
+
+.back-news {
+  display: inline-block;
+  color: #b5121b;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-decoration: none;
+}
+
+@media(max-width:600px) {
+  .news-detail-page { margin: 10px; padding: 15px; }
+  .news-detail-page h1 { font-size: 23px; }
+  .news-detail-page .news-content { font-size: 17px; }
 }
 </style>
-</head>
-
-<body>
-<div class="topbar">
-<div class="container">
-<span id="today"></span>
-<span>সত্যের সন্ধানে, প্রতিদিন বাংলাদেশের পাশে</span>
-</div>
-</div>
-
-<header class="brand">
-<div class="container">
-<div class="logo">
-<h1>প্রতিদিন বাংলাদেশ</h1>
-<p>PRATIDIN BANGLADESH | সত্য ও বস্তুনিষ্ঠ সংবাদ</p>
-</div>
-<div class="header-ad">আপনার বিজ্ঞাপন এখানে দিন</div>
-</div>
-</header>
-
-<nav>
-<div class="container">
-<a href="/">হোম</a>
-<a href="/?category=জাতীয়">জাতীয়</a>
-<a href="/?category=রাজনীতি">রাজনীতি</a>
-<a href="/?category=আন্তর্জাতিক">আন্তর্জাতিক</a>
-<a href="/?category=খেলাধুলা">খেলাধুলা</a>
-<a href="/?category=বিনোদন">বিনোদন</a>
-<a href="/?category=অর্থনীতি">অর্থনীতি</a>
-<a href="/?category=প্রযুক্তি">প্রযুক্তি</a>
-</div>
-</nav>
-
-<div class="container">
-<div class="breaking">
-<strong>ব্রেকিং নিউজ</strong>
-<marquee>প্রতিদিন বাংলাদেশের সঙ্গে থাকুন। সর্বশেষ সংবাদ জানতে আমাদের ওয়েবসাইট ভিজিট করুন।</marquee>
-</div>
-</div>
-
-<main class="container hero">
-<h2 class="section-title">সর্বশেষ সংবাদ</h2>
-<div id="news-list">
-<div class="empty">সংবাদ লোড হচ্ছে...</div>
-</div>
-</main>
-
-<footer>
-<div class="container">
-<div class="footer-content">
-<div>
-<div class="footer-logo">প্রতিদিন বাংলাদেশ</div>
-<p>সত্য ও বস্তুনিষ্ঠ সংবাদ প্রকাশে আমরা প্রতিশ্রুতিবদ্ধ।</p>
-</div>
-<div>
-<p>যোগাযোগ | আমাদের সম্পর্কে | বিজ্ঞাপন</p>
-<p>ইমেইল: info@example.com</p>
-</div>
-</div>
-<div class="copyright">
-© 2026 প্রতিদিন বাংলাদেশ | সর্বস্বত্ব সংরক্ষিত
-</div>
-</div>
-</footer>
 
 <script>
-document.getElementById('today').textContent =
-new Date().toLocaleDateString('bn-BD',{
-weekday:'long',year:'numeric',month:'long',day:'numeric'
-});
+(function () {
 
-function escapeHTML(value){
-return String(value ?? '').replace(/[&<>"']/g,char=>({
-'&':'&amp;','<':'&lt;','>':'&gt;',
-'"':'&quot;',"'":'&#39;'
-})[char]);
-}
+  const path = window.location.pathname;
+  const match = path.match(/^\/news\/([^/]+)\/?$/);
 
-// Backend-এর cover_url সহ সব সম্ভাব্য image field পরীক্ষা করবে
-function getImage(item){
-return item.cover_url ||
-item.coverUrl ||
-item.image_url ||
-item.imageUrl ||
-item.featuredImage ||
-item.thumbnail ||
-item.image ||
-'';
-}
+  // শুধু বিস্তারিত খবরের পৃষ্ঠায় কাজ করবে
+  if (!match) return;
 
-async function loadNews(){
-const container=document.getElementById('news-list');
+  const slug = decodeURIComponent(match[1]);
 
-try{
-const params=new URLSearchParams(window.location.search);
-const category=params.get('category');
+  document.body.innerHTML = `
+    <div class="news-detail-page">
+      <a href="/" class="back-news">← হোমপেজে ফিরে যান</a>
+      <div id="newsDetails">খবর লোড হচ্ছে...</div>
+    </div>
+  `;
 
-let api='/api/news';
+  async function loadNewsDetails() {
+    const container = document.getElementById("newsDetails");
 
-if(category){
-api+='?category='+encodeURIComponent(category);
-}
+    try {
+      const response = await fetch(
+        "/api/news/" + encodeURIComponent(slug)
+      );
 
-const response=await fetch(api);
+      if (!response.ok) {
+        throw new Error("খবরটি পাওয়া যায়নি");
+      }
 
-if(!response.ok){
-throw new Error('News load failed');
-}
+      const news = await response.json();
 
-const result=await response.json();
-const news=Array.isArray(result)?result:(result.news||[]);
+      const image =
+        news.cover_url ||
+        news.coverUrl ||
+        news.image_url ||
+        news.imageUrl ||
+        news.image ||
+        "";
 
-if(!news.length){
-container.innerHTML='<div class="empty">এখনো কোনো সংবাদ প্রকাশ করা হয়নি।</div>';
-return;
-}
+      const title = news.title || "";
+      const content = news.content || "";
+      const author = news.author || "ডেস্ক রিপোর্ট";
 
-container.innerHTML=news.map(item=>{
+      const date = news.created_at
+        ? new Date(news.created_at).toLocaleDateString("bn-BD")
+        : "";
 
-const title=escapeHTML(item.title);
-const summary=escapeHTML(item.summary || '');
-const categoryName=escapeHTML(item.category || 'সাধারণ');
-const slug=encodeURIComponent(item.slug || '');
-const image=getImage(item);
+      const currentUrl = window.location.href;
 
-return `
-<article class="news-card">
+      const facebookUrl =
+        "https://www.facebook.com/sharer/sharer.php?u=" +
+        encodeURIComponent(currentUrl);
 
-${image ? `
-<img class="news-image"
-src="${escapeHTML(image)}"
-alt="${title}"
-loading="lazy"
-onerror="this.onerror=null;this.style.display='none';">
-` : `
-<div class="news-image" style="display:flex;align-items:center;justify-content:center;color:#888">
-ছবি পাওয়া যায়নি
-</div>
-`}
+      const whatsappUrl =
+        "https://api.whatsapp.com/send?text=" +
+        encodeURIComponent(title + " " + currentUrl);
 
-<div class="news-content">
-<span class="category">${categoryName}</span>
-<h2>${title}</h2>
-<p>${summary}</p>
-<a href="/news/${slug}">বিস্তারিত পড়ুন →</a>
-</div>
+      container.innerHTML = `
+        <span style="
+          background:#fff0f0;
+          color:#b5121b;
+          padding:7px 13px;
+          border-radius:5px;
+        ">${escapeHTML(news.category || "জাতীয়")}</span>
 
-</article>
-`;
-}).join('');
+        <h1>${escapeHTML(title)}</h1>
 
-}catch(error){
-console.error('News loading error:',error);
-container.innerHTML='<div class="empty">সংবাদ লোড করা যায়নি। পরে আবার চেষ্টা করুন।</div>';
-}
-}
+        <div class="news-meta">
+          লেখক: ${escapeHTML(author)}
+          ${date ? " | প্রকাশিত: " + escapeHTML(date) : ""}
+        </div>
 
-loadNews();
+        ${image ? `
+          <img
+            class="news-cover"
+            src="${escapeHTML(image)}"
+            alt="${escapeHTML(title)}"
+          >
+        ` : ""}
+
+        <div class="news-ad">
+          বিজ্ঞাপনের জন্য যোগাযোগ করুন
+        </div>
+
+        <div class="news-content">
+          ${escapeHTML(content)}
+        </div>
+
+        <div class="news-ad">
+          বিজ্ঞাপনের জায়গা
+        </div>
+
+        <h3>খবরটি শেয়ার করুন</h3>
+
+        <div class="news-share">
+          <a class="facebook-share"
+             href="${facebookUrl}"
+             target="_blank"
+             rel="noopener">
+             Facebook Share
+          </a>
+
+          <a class="whatsapp-share"
+             href="${whatsappUrl}"
+             target="_blank"
+             rel="noopener">
+             WhatsApp Share
+          </a>
+
+          <button class="copy-share" id="copyNewsLink">
+            Copy Link
+          </button>
+        </div>
+      `;
+
+      document.title = title + " | প্রতিদিন বাংলাদেশ";
+
+      document.getElementById("copyNewsLink")
+        .addEventListener("click", async function () {
+          try {
+            await navigator.clipboard.writeText(currentUrl);
+            this.textContent = "লিংক কপি হয়েছে";
+          } catch (error) {
+            prompt("এই লিংকটি কপি করুন:", currentUrl);
+          }
+        });
+
+    } catch (error) {
+      container.innerHTML = `
+        <h2>দুঃখিত!</h2>
+        <p>${escapeHTML(error.message)}</p>
+        <a href="/">হোমপেজে ফিরে যান</a>
+      `;
+    }
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, function (char) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char];
+    });
+  }
+
+  loadNewsDetails();
+
+})();
 </script>
-
-</body>
-</html>
