@@ -3,68 +3,43 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin Dashboard | প্রতিদিন বাংলাদেশ</title>
 
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,"Noto Sans Bengali",sans-serif;
-  background:#f3f4f6;
-  color:#222;
-}
-header{
-  background:#b5121b;
-  color:white;
-  padding:18px 25px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-header h2{margin:0;font-size:21px}
+body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f3f4f6;color:#222}
+header{background:#b5121b;color:white;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+header h2{margin:0;font-size:20px}
 .container{max-width:1100px;margin:25px auto;padding:0 15px}
-.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-button{
-  border:0;
-  padding:11px 17px;
-  border-radius:5px;
-  cursor:pointer;
-  font-weight:bold;
-}
-.tab{background:#ddd}
-.tab.active,.primary{background:#b5121b;color:white}
-.card{
-  background:white;
-  padding:22px;
-  border-radius:9px;
-  box-shadow:0 2px 10px #0000000c;
-  margin-bottom:20px;
-}
-input,textarea,select{
-  width:100%;
-  padding:12px;
-  margin:7px 0 14px;
-  border:1px solid #ccc;
-  border-radius:5px;
-  font-size:15px;
-}
-textarea{min-height:150px;resize:vertical}
+.card{background:white;padding:22px;border-radius:10px;box-shadow:0 2px 10px #0000000c;margin-bottom:20px}
+input,textarea,select{width:100%;padding:12px;margin:8px 0 15px;border:1px solid #ccc;border-radius:6px;font-size:15px}
+textarea{min-height:180px;resize:vertical}
 label{font-weight:bold}
+button{border:0;padding:11px 17px;border-radius:5px;cursor:pointer;font-weight:bold}
+button:disabled{opacity:.6;cursor:not-allowed}
+.primary{background:#b5121b;color:white}
+.secondary{background:#555;color:white}
+.danger{background:#dc3545;color:white}
+.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.tab{background:#ddd}
+.tab.active{background:#b5121b;color:white}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#dashboard{display:none}
+.hidden{display:none}
+#message,#loginMessage{margin-top:12px;font-weight:bold}
+.preview{margin:10px 0 20px}
+.preview img{max-width:100%;max-height:300px;border-radius:8px;border:1px solid #ddd;display:block}
 table{width:100%;border-collapse:collapse}
 th,td{padding:12px;border-bottom:1px solid #eee;text-align:left}
 th{background:#f5f5f5}
 .actions{display:flex;gap:6px;flex-wrap:wrap}
-.danger{background:#dc3545;color:white}
-.secondary{background:#555;color:white}
-#dashboard{display:none}
-#message,#loginMessage{margin:12px 0;font-weight:bold}
-.hidden{display:none}
+.status{font-size:13px;color:#555;margin-top:5px}
 @media(max-width:650px){
-  .form-grid{grid-template-columns:1fr}
-  .card{padding:15px}
-  table{font-size:13px}
+ .form-grid{grid-template-columns:1fr}
+ .card{padding:15px}
+ table{font-size:13px}
+ header h2{font-size:16px}
 }
 </style>
 </head>
@@ -72,439 +47,425 @@ th{background:#f5f5f5}
 <body>
 
 <header>
-  <h2>প্রতিদিন বাংলাদেশ — Admin</h2>
-  <button class="secondary" onclick="logout()">Logout</button>
+<h2>প্রতিদিন বাংলাদেশ — Admin</h2>
+<button class="secondary" onclick="logout()">Logout</button>
 </header>
 
 <div class="container">
 
-  <!-- LOGIN -->
-  <div id="loginBox" class="card" style="max-width:420px;margin:60px auto">
-    <h2>Admin Login</h2>
+<!-- LOGIN -->
+<div id="loginBox" class="card" style="max-width:430px;margin:60px auto">
+<h2>Admin Login</h2>
 
-    <label>ইমেইল / ইউজারনেম</label>
-    <input id="username" placeholder="Admin username">
+<label>ইমেইল / ইউজারনেম</label>
+<input id="username" placeholder="Admin username">
 
-    <label>পাসওয়ার্ড</label>
-    <input id="password" type="password" placeholder="Password">
+<label>পাসওয়ার্ড</label>
+<input id="password" type="password" placeholder="Password">
 
-    <button class="primary" style="width:100%" onclick="login()">Login</button>
+<button class="primary" style="width:100%" onclick="login()">Login</button>
+<div id="loginMessage"></div>
+</div>
 
-    <div id="loginMessage"></div>
-  </div>
+<!-- DASHBOARD -->
+<div id="dashboard">
 
-  <!-- DASHBOARD -->
-  <div id="dashboard">
+<div class="tabs">
+<button class="tab active" onclick="showTab('add',this)">নিউজ প্রকাশ</button>
+<button class="tab" onclick="showTab('list',this)">নিউজ তালিকা</button>
+</div>
 
-    <div class="tabs">
-      <button class="tab active" onclick="showTab('add',this)">নিউজ প্রকাশ</button>
-      <button class="tab" onclick="showTab('list',this)">নিউজ তালিকা</button>
-    </div>
+<!-- ADD NEWS -->
+<section id="addSection" class="card">
 
-    <!-- NEWS FORM -->
-    <section id="addSection" class="card">
+<h2 id="formTitle">নতুন নিউজ প্রকাশ করুন</h2>
 
-      <h2 id="formTitle">নতুন নিউজ প্রকাশ করুন</h2>
+<input type="hidden" id="newsId">
 
-      <input type="hidden" id="newsId">
+<label>নিউজের শিরোনাম</label>
+<input id="title" placeholder="নিউজের শিরোনাম লিখুন">
 
-      <label>নিউজের শিরোনাম</label>
-      <input id="title" placeholder="নিউজের শিরোনাম লিখুন">
+<div class="form-grid">
+<div>
+<label>বিভাগ</label>
+<select id="category">
+<option value="জাতীয়">জাতীয়</option>
+<option value="রাজনীতি">রাজনীতি</option>
+<option value="আন্তর্জাতিক">আন্তর্জাতিক</option>
+<option value="খেলাধুলা">খেলাধুলা</option>
+<option value="বিনোদন">বিনোদন</option>
+<option value="শিক্ষা">শিক্ষা</option>
+<option value="অর্থনীতি">অর্থনীতি</option>
+<option value="প্রযুক্তি">প্রযুক্তি</option>
+</select>
+</div>
 
-      <div class="form-grid">
-        <div>
-          <label>বিভাগ</label>
-          <select id="category">
-            <option value="জাতীয়">জাতীয়</option>
-            <option value="রাজনীতি">রাজনীতি</option>
-            <option value="আন্তর্জাতিক">আন্তর্জাতিক</option>
-            <option value="খেলাধুলা">খেলাধুলা</option>
-            <option value="বিনোদন">বিনোদন</option>
-            <option value="শিক্ষা">শিক্ষা</option>
-            <option value="অর্থনীতি">অর্থনীতি</option>
-            <option value="প্রযুক্তি">প্রযুক্তি</option>
-          </select>
-        </div>
+<div>
+<label>লেখকের নাম</label>
+<input id="author" placeholder="লেখকের নাম">
+</div>
+</div>
 
-        <div>
-          <label>লেখকের নাম</label>
-          <input id="author" placeholder="লেখকের নাম">
-        </div>
-      </div>
+<label>নিউজের ছবি নির্বাচন করুন</label>
+<input id="imageFile" type="file" accept="image/*" onchange="previewImage()">
 
-      <label>ছবির URL</label>
-      <input id="image" placeholder="https://example.com/image.jpg">
+<div class="preview">
+<img id="imagePreview" class="hidden" alt="ছবির Preview">
+<div id="imageStatus" class="status">ছবি নির্বাচন করলে Preview দেখা যাবে</div>
+</div>
 
-      <label>নিউজের বিস্তারিত</label>
-      <textarea id="content" placeholder="নিউজের সম্পূর্ণ বিবরণ লিখুন"></textarea>
+<input type="hidden" id="coverUrl">
 
-      <button class="primary" onclick="saveNews()">প্রকাশ করুন</button>
-      <button class="secondary" onclick="resetForm()">ফর্ম পরিষ্কার</button>
+<label>ভিডিও URL (ঐচ্ছিক)</label>
+<input id="videoUrl" placeholder="YouTube বা ভিডিও URL">
 
-      <div id="message"></div>
-    </section>
+<label>নিউজের বিস্তারিত</label>
+<textarea id="content" placeholder="নিউজের সম্পূর্ণ বিবরণ লিখুন"></textarea>
 
-    <!-- NEWS LIST -->
-    <section id="listSection" class="card hidden">
+<button class="primary" id="saveButton" onclick="saveNews()">নিউজ প্রকাশ করুন</button>
+<button class="secondary" onclick="resetForm()">ফর্ম পরিষ্কার</button>
 
-      <h2>নিউজ তালিকা</h2>
+<div id="message"></div>
 
-      <button class="primary" onclick="loadNews()">Refresh</button>
+</section>
 
-      <div style="overflow-x:auto;margin-top:15px">
-        <table>
-          <thead>
-            <tr>
-              <th>শিরোনাম</th>
-              <th>বিভাগ</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+<!-- NEWS LIST -->
+<section id="listSection" class="card hidden">
+<h2>নিউজ তালিকা</h2>
+<button class="primary" onclick="loadNews()">Refresh</button>
 
-          <tbody id="newsTable">
-            <tr>
-              <td colspan="3">নিউজ লোড হচ্ছে...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<div style="overflow-x:auto;margin-top:15px">
+<table>
+<thead>
+<tr>
+<th>শিরোনাম</th>
+<th>বিভাগ</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="newsTable">
+<tr><td colspan="3">নিউজ লোড হচ্ছে...</td></tr>
+</tbody>
+</table>
+</div>
+</section>
 
-    </section>
-  </div>
+</div>
 </div>
 
 <script>
-
-// LOGIN TOKEN
 let token = localStorage.getItem("adminToken") || "";
+let newsCache = [];
 
-// MESSAGE
 function showMessage(id,text,color="red"){
   const el=document.getElementById(id);
   el.textContent=text;
   el.style.color=color;
 }
 
-// API RESPONSE
-async function readResponse(response){
-  const text = await response.text();
+async function apiFetch(url,options={}){
+  const headers={
+    ...(options.headers || {}),
+    "Authorization":"Bearer "+token
+  };
 
-  let data = {};
+  const response=await fetch(url,{
+    ...options,
+    headers
+  });
+
+  const text=await response.text();
+  let data={};
 
   try{
-    data = text ? JSON.parse(text) : {};
-  }catch(error){
-    throw new Error("সার্ভার থেকে সঠিক Response পাওয়া যায়নি");
+    data=JSON.parse(text);
+  }catch{
+    data={error:text || "Server response পাওয়া যায়নি"};
   }
 
   if(!response.ok){
-    throw new Error(data.message || data.error || "Request Failed");
+    throw new Error(data.error || data.message || "Request failed");
   }
 
   return data;
 }
 
-// AUTH HEADER
-function authHeaders(){
-  return {
-    "Content-Type":"application/json",
-    "Authorization":"Bearer "+token
-  };
-}
-
-// LOGIN
+/* LOGIN */
 async function login(){
-
   const username=document.getElementById("username").value.trim();
   const password=document.getElementById("password").value;
 
   if(!username || !password){
-    showMessage("loginMessage","ইউজারনেম ও পাসওয়ার্ড দিন");
+    showMessage("loginMessage","ইউজারনেম ও পাসওয়ার্ড দিন");
     return;
   }
 
   try{
-
     const response=await fetch("/api/admin/login",{
       method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        username:username,
-        password:password
-      })
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username,password})
     });
 
-    const data=await readResponse(response);
+    const data=await response.json();
 
-    token=data.token || data.accessToken;
+    if(!response.ok){
+      throw new Error(data.error || data.message || "Login failed");
+    }
+
+    token=data.token;
 
     if(!token){
-      throw new Error("Login Token পাওয়া যায়নি");
+      throw new Error("Login token পাওয়া যায়নি");
     }
 
     localStorage.setItem("adminToken",token);
-
     showDashboard();
 
   }catch(error){
-    showMessage("loginMessage","সমস্যা: "+error.message);
+    showMessage("loginMessage",error.message);
   }
 }
 
-// SHOW DASHBOARD
+/* DASHBOARD */
 function showDashboard(){
-
   document.getElementById("loginBox").style.display="none";
   document.getElementById("dashboard").style.display="block";
-
   loadNews();
 }
 
-// LOAD NEWS
-async function loadNews(){
+/* IMAGE PREVIEW */
+function previewImage(){
+  const file=document.getElementById("imageFile").files[0];
+  const preview=document.getElementById("imagePreview");
+  const status=document.getElementById("imageStatus");
 
-  const tbody=document.getElementById("newsTable");
-
-  tbody.innerHTML="<tr><td colspan='3'>নিউজ লোড হচ্ছে...</td></tr>";
-
-  try{
-
-    if(!token) throw new Error("আবার Login করুন");
-
-    const response=await fetch("/api/admin/news",{
-      method:"GET",
-      headers:authHeaders()
-    });
-
-    const data=await readResponse(response);
-
-    const news=Array.isArray(data)
-      ? data
-      : (data.news || data.data || []);
-
-    tbody.innerHTML="";
-
-    if(!news.length){
-      tbody.innerHTML="<tr><td colspan='3'>কোনো নিউজ পাওয়া যায়নি</td></tr>";
-      return;
-    }
-
-    news.forEach(item=>{
-
-      const tr=document.createElement("tr");
-
-      const title=document.createElement("td");
-      const category=document.createElement("td");
-      const actions=document.createElement("td");
-
-      const edit=document.createElement("button");
-      const del=document.createElement("button");
-
-      title.textContent=item.title || "";
-      category.textContent=item.category || "";
-
-      edit.textContent="Edit";
-      edit.className="secondary";
-      edit.onclick=()=>editNews(item);
-
-      del.textContent="Delete";
-      del.className="danger";
-      del.onclick=()=>deleteNews(item.id || item._id);
-
-      actions.append(edit,del);
-
-      tr.append(title,category,actions);
-
-      tbody.appendChild(tr);
-
-    });
-
-  }catch(error){
-
-    tbody.innerHTML="";
-
-    const tr=document.createElement("tr");
-    const td=document.createElement("td");
-
-    td.colSpan=3;
-    td.textContent="সমস্যা: "+error.message;
-
-    tr.appendChild(td);
-    tbody.appendChild(tr);
+  if(!file){
+    preview.classList.add("hidden");
+    status.textContent="ছবি নির্বাচন করলে Preview দেখা যাবে";
+    return;
   }
+
+  if(!file.type.startsWith("image/")){
+    alert("শুধুমাত্র ছবি নির্বাচন করুন");
+    document.getElementById("imageFile").value="";
+    return;
+  }
+
+  if(file.size>10*1024*1024){
+    alert("ছবির সাইজ ১০ MB-এর কম হতে হবে");
+    document.getElementById("imageFile").value="";
+    return;
+  }
+
+  preview.src=URL.createObjectURL(file);
+  preview.classList.remove("hidden");
+  status.textContent="ছবি নির্বাচন হয়েছে: "+file.name;
 }
 
-// SAVE / PUBLISH NEWS
-async function saveNews(){
+/* IMAGE UPLOAD TO CLOUDINARY THROUGH SERVER */
+async function uploadImage(){
+  const file=document.getElementById("imageFile").files[0];
 
+  if(!file){
+    return document.getElementById("coverUrl").value;
+  }
+
+  const formData=new FormData();
+  formData.append("file",file);
+
+  showMessage("message","ছবি Upload হচ্ছে...","blue");
+
+  const response=await fetch("/api/admin/upload",{
+    method:"POST",
+    headers:{
+      "Authorization":"Bearer "+token
+    },
+    body:formData
+  });
+
+  const data=await response.json();
+
+  if(!response.ok){
+    throw new Error(data.error || "ছবি Upload ব্যর্থ হয়েছে");
+  }
+
+  if(!data.url){
+    throw new Error("Upload URL পাওয়া যায়নি");
+  }
+
+  document.getElementById("coverUrl").value=data.url;
+  document.getElementById("imageStatus").textContent="ছবি Upload সম্পন্ন হয়েছে";
+  return data.url;
+}
+
+/* SAVE NEWS */
+async function saveNews(){
+  const button=document.getElementById("saveButton");
   const id=document.getElementById("newsId").value;
 
   const title=document.getElementById("title").value.trim();
   const content=document.getElementById("content").value.trim();
 
-  const payload={
-
-    title:title,
-
-    summary:content.substring(0,200),
-
-    category:document.getElementById("category").value,
-
-    author:document.getElementById("author").value.trim(),
-
-    cover_url:document.getElementById("image").value.trim(),
-
-    content:content,
-
-    status:"published"
-
-  };
-
-  if(!payload.title || !payload.content){
+  if(!title || !content){
     showMessage("message","শিরোনাম ও বিস্তারিত লিখুন");
     return;
   }
 
-  if(!token){
-    showMessage("message","আবার Login করুন");
-    return;
-  }
+  button.disabled=true;
+  button.textContent="অপেক্ষা করুন...";
 
   try{
+    const coverUrl=await uploadImage();
+
+    const payload={
+      title,
+      category:document.getElementById("category").value,
+      author:document.getElementById("author").value.trim() || "ডেস্ক রিপোর্ট",
+      content,
+      summary:content.substring(0,200),
+      cover_url:coverUrl,
+      video_url:document.getElementById("videoUrl").value.trim(),
+      status:"published"
+    };
 
     const url=id
       ? "/api/admin/news/"+encodeURIComponent(id)
       : "/api/admin/news";
 
-    const response=await fetch(url,{
-
+    const data=await apiFetch(url,{
       method:id?"PUT":"POST",
-
-      headers:authHeaders(),
-
+      headers:{"Content-Type":"application/json"},
       body:JSON.stringify(payload)
-
     });
 
-    const data=await readResponse(response);
-
-    showMessage(
-      "message",
-      id?"নিউজ সফলভাবে আপডেট হয়েছে":"নিউজ সফলভাবে প্রকাশ হয়েছে",
-      "green"
-    );
+    showMessage("message",data.message || "নিউজ সফলভাবে প্রকাশ হয়েছে","green");
 
     resetForm();
-
-    loadNews();
+    await loadNews();
 
   }catch(error){
-
     showMessage("message","সমস্যা: "+error.message);
-
+  }finally{
+    button.disabled=false;
+    button.textContent="নিউজ প্রকাশ করুন";
   }
 }
 
-// EDIT NEWS
-function editNews(item){
-
-  document.getElementById("newsId").value=item.id || item._id || "";
-
-  document.getElementById("title").value=item.title || "";
-
-  document.getElementById("category").value=item.category || "জাতীয়";
-
-  document.getElementById("author").value=item.author || "";
-
-  document.getElementById("image").value=
-    item.cover_url || item.image || item.imageUrl || item.thumbnail || "";
-
-  document.getElementById("content").value=
-    item.content || item.description || "";
-
-  document.getElementById("formTitle").textContent="নিউজ এডিট করুন";
-
-  showTab("add",document.querySelector(".tab"));
-
-}
-
-// DELETE NEWS
-async function deleteNews(id){
-
-  if(!id || !confirm("আপনি কি এই নিউজটি মুছে ফেলতে চান?")){
-    return;
-  }
+/* LOAD NEWS */
+async function loadNews(){
+  const tbody=document.getElementById("newsTable");
+  tbody.innerHTML="<tr><td colspan='3'>লোড হচ্ছে...</td></tr>";
 
   try{
+    const data=await apiFetch("/api/admin/news");
+    newsCache=Array.isArray(data)?data:(data.news || []);
 
-    const response=await fetch(
-      "/api/admin/news/"+encodeURIComponent(id),
-      {
-        method:"DELETE",
-        headers:authHeaders()
-      }
-    );
+    tbody.innerHTML="";
 
-    await readResponse(response);
+    if(!newsCache.length){
+      tbody.innerHTML="<tr><td colspan='3'>কোনো নিউজ নেই</td></tr>";
+      return;
+    }
 
-    alert("নিউজ মুছে ফেলা হয়েছে");
+    newsCache.forEach(item=>{
+      const tr=document.createElement("tr");
+      const title=document.createElement("td");
+      const category=document.createElement("td");
+      const actions=document.createElement("td");
 
-    loadNews();
+      title.textContent=item.title || "";
+      category.textContent=item.category || "";
+
+      const edit=document.createElement("button");
+      edit.textContent="Edit";
+      edit.className="secondary";
+      edit.onclick=()=>editNews(item);
+
+      const del=document.createElement("button");
+      del.textContent="Delete";
+      del.className="danger";
+      del.onclick=()=>deleteNews(item.id);
+
+      actions.append(edit,del);
+      tr.append(title,category,actions);
+      tbody.appendChild(tr);
+    });
 
   }catch(error){
-
-    alert("সমস্যা: "+error.message);
-
+    tbody.innerHTML="<tr><td colspan='3'></td></tr>";
+    tbody.querySelector("td").textContent=error.message;
   }
 }
 
-// RESET FORM
-function resetForm(){
+/* EDIT NEWS */
+function editNews(item){
+  document.getElementById("newsId").value=item.id;
+  document.getElementById("title").value=item.title || "";
+  document.getElementById("category").value=item.category || "জাতীয়";
+  document.getElementById("author").value=item.author || "";
+  document.getElementById("coverUrl").value=item.cover_url || "";
+  document.getElementById("videoUrl").value=item.video_url || "";
+  document.getElementById("content").value=item.content || "";
 
-  ["newsId","title","author","image","content"].forEach(id=>{
-    document.getElementById(id).value="";
-  });
+  const preview=document.getElementById("imagePreview");
+  if(item.cover_url){
+    preview.src=item.cover_url;
+    preview.classList.remove("hidden");
+    document.getElementById("imageStatus").textContent="বর্তমান ছবি";
+  }
+
+  document.getElementById("formTitle").textContent="নিউজ Edit করুন";
+  showTab("add",document.querySelector(".tab"));
+}
+
+/* DELETE NEWS */
+async function deleteNews(id){
+  if(!confirm("নিউজটি Delete করতে চান?"))return;
+
+  try{
+    await apiFetch("/api/admin/news/"+encodeURIComponent(id),{
+      method:"DELETE"
+    });
+    alert("নিউজ Delete হয়েছে");
+    loadNews();
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+/* RESET */
+function resetForm(){
+  ["newsId","title","author","imageFile","content","coverUrl","videoUrl"]
+    .forEach(id=>document.getElementById(id).value="");
 
   document.getElementById("category").value="জাতীয়";
-
   document.getElementById("formTitle").textContent="নতুন নিউজ প্রকাশ করুন";
-
-  document.getElementById("message").textContent="";
+  document.getElementById("imagePreview").classList.add("hidden");
+  document.getElementById("imageStatus").textContent="ছবি নির্বাচন করলে Preview দেখা যাবে";
+  showMessage("message","");
 }
 
-// TAB CHANGE
+/* TAB */
 function showTab(tab,button){
-
   document.getElementById("addSection").classList.toggle("hidden",tab!=="add");
-
   document.getElementById("listSection").classList.toggle("hidden",tab!=="list");
 
-  document.querySelectorAll(".tab").forEach(el=>{
-    el.classList.remove("active");
-  });
+  document.querySelectorAll(".tab").forEach(el=>el.classList.remove("active"));
+  if(button)button.classList.add("active");
 
-  if(button){
-    button.classList.add("active");
-  }
+  if(tab==="list")loadNews();
 }
 
-// LOGOUT
+/* LOGOUT */
 function logout(){
-
   localStorage.removeItem("adminToken");
-
   token="";
-
   location.reload();
 }
 
-// AUTO LOGIN
-if(token){
-  showDashboard();
-}
-
+/* AUTO LOGIN */
+if(token)showDashboard();
 </script>
 
 </body>
