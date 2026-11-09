@@ -1,10 +1,19 @@
-<!-- NEWS DETAILS, ADVERTISEMENT & SOCIAL SHARE -->
+
+<!-- =====================================
+     DESH BANGLA NEWS DETAILS PAGE
+===================================== -->
 
 <style>
+.news-detail-page,
+.news-detail-page * {
+  box-sizing: border-box;
+}
+
 .news-detail-page {
-  max-width: 900px;
+  width: 100%;
+  max-width: 1000px;
   margin: 30px auto;
-  padding: 20px;
+  padding: 25px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 15px rgba(0,0,0,.08);
@@ -13,50 +22,101 @@
 }
 
 .news-detail-page h1 {
-  font-size: 30px;
+  font-size: 32px;
   line-height: 1.6;
-  margin: 15px 0;
+  margin: 18px 0;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
-.news-detail-page .news-meta {
+.news-category {
+  display: inline-block;
+  background: #fff0f0;
+  color: #b5121b;
+  padding: 7px 14px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.news-meta {
   color: #777;
-  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 22px;
 }
 
-.news-detail-page .news-cover {
+.news-cover {
+  display: block;
   width: 100%;
-  max-height: 520px;
+  max-height: 560px;
   object-fit: contain;
   border-radius: 8px;
-  background: #eee;
+  background: #f3f3f3;
+  margin: 20px 0;
 }
 
-.news-detail-page .news-content {
+.news-summary {
+  background: #f8f8f8;
+  border-left: 4px solid #b5121b;
+  padding: 15px 18px;
+  margin: 20px 0;
+  font-size: 18px;
+  line-height: 1.9;
+  font-weight: 600;
+}
+
+.news-content {
   font-size: 19px;
-  line-height: 2;
+  line-height: 2.1;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
   margin-top: 25px;
+  color: #292929;
+}
+
+.news-content p {
+  margin: 0 0 18px;
+}
+
+.news-video {
+  margin: 25px 0;
+}
+
+.news-video iframe,
+.news-video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 8px;
+  background: #000;
 }
 
 .news-ad {
+  width: 100%;
+  min-height: 100px;
+  padding: 25px 10px;
+  margin: 28px 0;
+  text-align: center;
   background: #f5f5f5;
   border: 1px dashed #aaa;
-  padding: 25px 10px;
-  text-align: center;
-  margin: 25px 0;
+  border-radius: 5px;
   color: #777;
-  min-height: 80px;
+  font-size: 14px;
 }
 
 .news-share {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 25px 0;
+  margin: 20px 0 30px;
 }
 
 .news-share a,
 .news-share button {
+  display: inline-block;
   padding: 12px 18px;
   border: 0;
   border-radius: 5px;
@@ -64,92 +124,347 @@
   text-decoration: none;
   cursor: pointer;
   font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: opacity .2s;
 }
 
-.facebook-share { background: #1877f2; }
-.whatsapp-share { background: #168b45; }
-.copy-share { background: #555; }
+.news-share a:hover,
+.news-share button:hover {
+  opacity: .85;
+}
+
+.facebook-share {
+  background: #1877f2;
+}
+
+.whatsapp-share {
+  background: #168b45;
+}
+
+.copy-share {
+  background: #555;
+}
+
+.native-share {
+  background: #b5121b;
+}
 
 .back-news {
   display: inline-block;
   color: #b5121b;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
   text-decoration: none;
 }
 
+.back-news:hover {
+  text-decoration: underline;
+}
+
+.news-loading {
+  text-align: center;
+  padding: 60px 10px;
+  font-size: 18px;
+}
+
+.news-error {
+  text-align: center;
+  padding: 45px 10px;
+  line-height: 2;
+}
+
+.news-error h2 {
+  color: #b5121b;
+}
+
+.news-section-heading {
+  border-left: 4px solid #b5121b;
+  padding-left: 12px;
+  margin-top: 30px;
+}
+
 @media(max-width:600px) {
-  .news-detail-page { margin: 10px; padding: 15px; }
-  .news-detail-page h1 { font-size: 23px; }
-  .news-detail-page .news-content { font-size: 17px; }
+  .news-detail-page {
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 5px;
+  }
+
+  .news-detail-page h1 {
+    font-size: 23px;
+    line-height: 1.6;
+  }
+
+  .news-content {
+    font-size: 17px;
+    line-height: 2;
+  }
+
+  .news-summary {
+    font-size: 16px;
+  }
+
+  .news-cover {
+    max-height: 350px;
+  }
+
+  .news-share a,
+  .news-share button {
+    flex: 1 1 40%;
+    text-align: center;
+    padding: 11px 8px;
+    font-size: 13px;
+  }
 }
 </style>
 
 <script>
 (function () {
+  "use strict";
 
-  const path = window.location.pathname;
-  const match = path.match(/^\/news\/([^/]+)\/?$/);
+  // HTML নিরাপদ রাখার ফাংশন
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function (char) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char];
+    });
+  }
 
-  // শুধু বিস্তারিত খবরের পৃষ্ঠায় কাজ করবে
-  if (!match) return;
-
-  const slug = decodeURIComponent(match[1]);
-
-  document.body.innerHTML = `
-    <div class="news-detail-page">
-      <a href="/" class="back-news">← হোমপেজে ফিরে যান</a>
-      <div id="newsDetails">খবর লোড হচ্ছে...</div>
-    </div>
-  `;
-
-  async function loadNewsDetails() {
-    const container = document.getElementById("newsDetails");
+  // নিরাপদ HTTP/HTTPS URL
+  function safeURL(value) {
+    if (!value) return "";
 
     try {
-      const response = await fetch(
-        "/api/news/" + encodeURIComponent(slug)
-      );
+      const url = new URL(String(value), window.location.origin);
 
-      if (!response.ok) {
-        throw new Error("খবরটি পাওয়া যায়নি");
+      if (url.protocol !== "https:" && url.protocol !== "http:") {
+        return "";
       }
 
+      return url.href;
+    } catch (error) {
+      return "";
+    }
+  }
+
+  // তারিখ দেখানোর ফাংশন
+  function formatDate(value) {
+    if (!value) return "";
+
+    const date = new Date(value);
+
+    if (isNaN(date.getTime())) return "";
+
+    return date.toLocaleDateString("bn-BD", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+  }
+
+  // YouTube ভিডিও URL থেকে Embed URL
+  function getVideoEmbed(url) {
+    try {
+      const parsed = new URL(url);
+
+      let videoId = "";
+
+      if (parsed.hostname.includes("youtube.com")) {
+        videoId = parsed.searchParams.get("v") || "";
+
+        if (!videoId && parsed.pathname.startsWith("/embed/")) {
+          videoId = parsed.pathname.split("/")[2] || "";
+        }
+      }
+
+      if (
+        parsed.hostname === "youtu.be" ||
+        parsed.hostname === "www.youtu.be"
+      ) {
+        videoId = parsed.pathname.substring(1);
+      }
+
+      if (videoId && /^[a-zA-Z0-9_-]{6,20}$/.test(videoId)) {
+        return "https://www.youtube-nocookie.com/embed/" +
+          encodeURIComponent(videoId);
+      }
+
+      return "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  async function loadNewsDetails() {
+
+    // শুধু /news/slug পেজে কাজ করবে
+    const match = window.location.pathname.match(/^\/news\/([^/]+)\/?$/);
+
+    if (!match) return;
+
+    let slug;
+
+    try {
+      slug = decodeURIComponent(match[1]);
+    } catch (error) {
+      slug = match[1];
+    }
+
+    // মূল কনটেন্টের জায়গা খুঁজবে
+    let mount =
+      document.querySelector("main") ||
+      document.querySelector("#app") ||
+      document.querySelector("#main-content") ||
+      document.querySelector(".main-content");
+
+    // main না থাকলে নতুন main তৈরি করবে
+    if (!mount) {
+      mount = document.createElement("main");
+      mount.id = "newsDetailMount";
+
+      const header = document.querySelector("header");
+
+      if (header && header.parentNode) {
+        header.insertAdjacentElement("afterend", mount);
+      } else {
+        document.body.appendChild(mount);
+      }
+    }
+
+    // পুরোনো মূল কনটেন্ট শুধু mount থেকে সরানো হবে
+    mount.innerHTML = `
+      <div class="news-detail-page">
+        <a href="/" class="back-news">← হোমপেজে ফিরে যান</a>
+        <div class="news-loading" id="newsDetails">
+          খবর লোড হচ্ছে...
+        </div>
+      </div>
+    `;
+
+    const container = mount.querySelector("#newsDetails");
+
+    try {
+
+      const response = await fetch(
+        "/api/news/" + encodeURIComponent(slug),
+        {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            "Accept": "application/json"
+          }
+        }
+      );
+
+      // API Response
       const news = await response.json();
 
-      const image =
+      if (!response.ok) {
+        throw new Error(
+          news.error || "খবরটি পাওয়া যায়নি।"
+        );
+      }
+
+      if (!news || !news.title) {
+        throw new Error("খবরের তথ্য পাওয়া যায়নি।");
+      }
+
+      // নিউজের তথ্য
+      const title = news.title || "শিরোনাম নেই";
+
+      const content =
+        news.content ||
+        "এই খবরের বিস্তারিত তথ্য পাওয়া যায়নি।";
+
+      const summary = news.summary || "";
+
+      const author = news.author || "ডেস্ক রিপোর্ট";
+
+      const category = news.category || "জাতীয়";
+
+      // ছবির URL
+      const image = safeURL(
         news.cover_url ||
         news.coverUrl ||
         news.image_url ||
         news.imageUrl ||
         news.image ||
-        "";
+        ""
+      );
 
-      const title = news.title || "";
-      const content = news.content || "";
-      const author = news.author || "ডেস্ক রিপোর্ট";
+      // ভিডিও URL
+      const video = safeURL(
+        news.video_url ||
+        news.videoUrl ||
+        ""
+      );
 
-      const date = news.created_at
-        ? new Date(news.created_at).toLocaleDateString("bn-BD")
-        : "";
+      const date = formatDate(news.created_at);
 
       const currentUrl = window.location.href;
 
+      // Facebook Share
       const facebookUrl =
         "https://www.facebook.com/sharer/sharer.php?u=" +
         encodeURIComponent(currentUrl);
 
+      // WhatsApp Share
       const whatsappUrl =
         "https://api.whatsapp.com/send?text=" +
-        encodeURIComponent(title + " " + currentUrl);
+        encodeURIComponent(title + "\n" + currentUrl);
 
+      // ভিডিও HTML
+      let videoHTML = "";
+
+      if (video) {
+        const embedURL = getVideoEmbed(video);
+
+        if (embedURL) {
+          videoHTML = `
+            <div class="news-video">
+              <iframe
+                src="${escapeHTML(embedURL)}"
+                title="News Video"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin">
+              </iframe>
+            </div>
+          `;
+        } else if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(video)) {
+          videoHTML = `
+            <div class="news-video">
+              <video controls preload="metadata">
+                <source src="${escapeHTML(video)}">
+                আপনার ব্রাউজার ভিডিও চালাতে পারছে না।
+              </video>
+            </div>
+          `;
+        } else {
+          videoHTML = `
+            <p>
+              <a href="${escapeHTML(video)}"
+                 target="_blank"
+                 rel="noopener noreferrer">
+                 ভিডিও দেখুন
+              </a>
+            </p>
+          `;
+        }
+      }
+
+      // সম্পূর্ণ খবর প্রদর্শন
       container.innerHTML = `
-        <span style="
-          background:#fff0f0;
-          color:#b5121b;
-          padding:7px 13px;
-          border-radius:5px;
-        ">${escapeHTML(news.category || "জাতীয়")}</span>
+
+        <span class="news-category">
+          ${escapeHTML(category)}
+        </span>
 
         <h1>${escapeHTML(title)}</h1>
 
@@ -163,7 +478,15 @@
             class="news-cover"
             src="${escapeHTML(image)}"
             alt="${escapeHTML(title)}"
+            loading="eager"
+            onerror="this.style.display='none'"
           >
+        ` : ""}
+
+        ${summary ? `
+          <div class="news-summary">
+            ${escapeHTML(summary)}
+          </div>
         ` : ""}
 
         <div class="news-ad">
@@ -174,67 +497,166 @@
           ${escapeHTML(content)}
         </div>
 
+        ${videoHTML}
+
         <div class="news-ad">
           বিজ্ঞাপনের জায়গা
         </div>
 
-        <h3>খবরটি শেয়ার করুন</h3>
+        <h3 class="news-section-heading">
+          খবরটি শেয়ার করুন
+        </h3>
 
         <div class="news-share">
-          <a class="facebook-share"
-             href="${facebookUrl}"
-             target="_blank"
-             rel="noopener">
-             Facebook Share
+
+          <a
+            class="facebook-share"
+            href="${facebookUrl}"
+            target="_blank"
+            rel="noopener noreferrer">
+            Facebook Share
           </a>
 
-          <a class="whatsapp-share"
-             href="${whatsappUrl}"
-             target="_blank"
-             rel="noopener">
-             WhatsApp Share
+          <a
+            class="whatsapp-share"
+            href="${whatsappUrl}"
+            target="_blank"
+            rel="noopener noreferrer">
+            WhatsApp Share
           </a>
 
-          <button class="copy-share" id="copyNewsLink">
+          <button
+            type="button"
+            class="copy-share"
+            id="copyNewsLink">
             Copy Link
           </button>
+
+          <button
+            type="button"
+            class="native-share"
+            id="nativeNewsShare">
+            Share
+          </button>
+
         </div>
+
+        <a href="/" class="back-news">
+          ← আরও খবর পড়ুন
+        </a>
       `;
 
+      // Browser Tab Title
       document.title = title + " | প্রতিদিন বাংলাদেশ";
 
+      // Facebook Open Graph metadata
+      function setMeta(property, content) {
+        let element = document.querySelector(
+          'meta[property="' + property + '"]'
+        );
+
+        if (!element) {
+          element = document.createElement("meta");
+          element.setAttribute("property", property);
+          document.head.appendChild(element);
+        }
+
+        element.setAttribute("content", content);
+      }
+
+      setMeta("og:type", "article");
+      setMeta("og:title", title);
+      setMeta("og:description", summary || title);
+      setMeta("og:url", currentUrl);
+
+      if (image) {
+        setMeta("og:image", image);
+      }
+
+      // Copy Link
       document.getElementById("copyNewsLink")
         .addEventListener("click", async function () {
+
+          const button = this;
+
           try {
-            await navigator.clipboard.writeText(currentUrl);
-            this.textContent = "লিংক কপি হয়েছে";
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(currentUrl);
+            } else {
+              const input = document.createElement("textarea");
+              input.value = currentUrl;
+              input.style.position = "fixed";
+              input.style.opacity = "0";
+
+              document.body.appendChild(input);
+              input.select();
+
+              const copied = document.execCommand("copy");
+
+              input.remove();
+
+              if (!copied) {
+                throw new Error("Copy failed");
+              }
+            }
+
+            button.textContent = "লিংক কপি হয়েছে";
+
           } catch (error) {
-            prompt("এই লিংকটি কপি করুন:", currentUrl);
+            window.prompt("এই লিংকটি কপি করুন:", currentUrl);
           }
+
+        });
+
+      // Native Share
+      document.getElementById("nativeNewsShare")
+        .addEventListener("click", async function () {
+
+          if (navigator.share) {
+            try {
+              await navigator.share({
+                title: title,
+                text: summary || title,
+                url: currentUrl
+              });
+            } catch (error) {
+              if (error.name !== "AbortError") {
+                alert("শেয়ার করা সম্ভব হয়নি।");
+              }
+            }
+          } else {
+            window.prompt("এই লিংকটি কপি করুন:", currentUrl);
+          }
+
         });
 
     } catch (error) {
+
+      console.error("News Details Error:", error);
+
       container.innerHTML = `
-        <h2>দুঃখিত!</h2>
-        <p>${escapeHTML(error.message)}</p>
-        <a href="/">হোমপেজে ফিরে যান</a>
+        <div class="news-error">
+          <h2>দুঃখিত!</h2>
+          <p>${escapeHTML(error.message || "খবর লোড করা যায়নি।")}</p>
+          <a href="/" class="back-news">
+            হোমপেজে ফিরে যান
+          </a>
+        </div>
       `;
+
     }
+
   }
 
-  function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, function (char) {
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      }[char];
-    });
+  // Page Load
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      loadNewsDetails
+    );
+  } else {
+    loadNewsDetails();
   }
-
-  loadNewsDetails();
 
 })();
 </script>
