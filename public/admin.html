@@ -26,7 +26,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .tab.active{background:#b5121b;color:white}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 #dashboard{display:none}
-.hidden{display:none}
+.hidden{display:none!important}
 #message,#loginMessage{margin-top:12px;font-weight:bold}
 .preview{margin:10px 0 20px}
 .preview img{max-width:100%;max-height:300px;border-radius:8px;border:1px solid #ddd;display:block}
@@ -156,6 +156,7 @@ th{background:#f5f5f5}
 <script>
 let token = localStorage.getItem("adminToken") || "";
 let newsCache = [];
+let previewObjectUrl = null;
 
 function showMessage(id,text,color="red"){
   const el=document.getElementById(id);
@@ -235,13 +236,25 @@ function showDashboard(){
 }
 
 /* IMAGE PREVIEW */
+function clearPreview(){
+  const preview=document.getElementById("imagePreview");
+
+  if(previewObjectUrl){
+    URL.revokeObjectURL(previewObjectUrl);
+    previewObjectUrl=null;
+  }
+
+  preview.removeAttribute("src");
+  preview.classList.add("hidden");
+}
+
 function previewImage(){
   const file=document.getElementById("imageFile").files[0];
   const preview=document.getElementById("imagePreview");
   const status=document.getElementById("imageStatus");
 
   if(!file){
-    preview.classList.add("hidden");
+    clearPreview();
     status.textContent="ছবি নির্বাচন করলে Preview দেখা যাবে";
     return;
   }
@@ -258,12 +271,15 @@ function previewImage(){
     return;
   }
 
-  preview.src=URL.createObjectURL(file);
+  clearPreview();
+
+  previewObjectUrl=URL.createObjectURL(file);
+  preview.src=previewObjectUrl;
   preview.classList.remove("hidden");
   status.textContent="ছবি নির্বাচন হয়েছে: "+file.name;
 }
 
-/* IMAGE UPLOAD TO CLOUDINARY THROUGH SERVER */
+/* IMAGE UPLOAD */
 async function uploadImage(){
   const file=document.getElementById("imageFile").files[0];
 
@@ -287,7 +303,7 @@ async function uploadImage(){
   const data=await response.json();
 
   if(!response.ok){
-    throw new Error(data.error || "ছবি Upload ব্যর্থ হয়েছে");
+    throw new Error(data.error || data.message || "ছবি Upload ব্যর্থ হয়েছে");
   }
 
   if(!data.url){
@@ -296,6 +312,7 @@ async function uploadImage(){
 
   document.getElementById("coverUrl").value=data.url;
   document.getElementById("imageStatus").textContent="ছবি Upload সম্পন্ন হয়েছে";
+
   return data.url;
 }
 
@@ -339,9 +356,15 @@ async function saveNews(){
       body:JSON.stringify(payload)
     });
 
-    showMessage("message",data.message || "নিউজ সফলভাবে প্রকাশ হয়েছে","green");
-
+    /* SAVE SUCCESS: CLEAR FORM AND PREVIEW */
     resetForm();
+
+    showMessage(
+      "message",
+      data.message || "নিউজ সফলভাবে প্রকাশ হয়েছে",
+      "green"
+    );
+
     await loadNews();
 
   }catch(error){
@@ -377,6 +400,8 @@ async function loadNews(){
       title.textContent=item.title || "";
       category.textContent=item.category || "";
 
+      actions.className="actions";
+
       const edit=document.createElement("button");
       edit.textContent="Edit";
       edit.className="secondary";
@@ -400,6 +425,8 @@ async function loadNews(){
 
 /* EDIT NEWS */
 function editNews(item){
+  resetForm();
+
   document.getElementById("newsId").value=item.id;
   document.getElementById("title").value=item.title || "";
   document.getElementById("category").value=item.category || "জাতীয়";
@@ -409,6 +436,7 @@ function editNews(item){
   document.getElementById("content").value=item.content || "";
 
   const preview=document.getElementById("imagePreview");
+
   if(item.cover_url){
     preview.src=item.cover_url;
     preview.classList.remove("hidden");
@@ -427,22 +455,37 @@ async function deleteNews(id){
     await apiFetch("/api/admin/news/"+encodeURIComponent(id),{
       method:"DELETE"
     });
+
     alert("নিউজ Delete হয়েছে");
-    loadNews();
+    await loadNews();
+
   }catch(error){
     alert(error.message);
   }
 }
 
-/* RESET */
+/* RESET FORM */
 function resetForm(){
+  if(previewObjectUrl){
+    URL.revokeObjectURL(previewObjectUrl);
+    previewObjectUrl=null;
+  }
+
   ["newsId","title","author","imageFile","content","coverUrl","videoUrl"]
-    .forEach(id=>document.getElementById(id).value="");
+    .forEach(id=>{
+      document.getElementById(id).value="";
+    });
 
   document.getElementById("category").value="জাতীয়";
   document.getElementById("formTitle").textContent="নতুন নিউজ প্রকাশ করুন";
-  document.getElementById("imagePreview").classList.add("hidden");
-  document.getElementById("imageStatus").textContent="ছবি নির্বাচন করলে Preview দেখা যাবে";
+
+  const preview=document.getElementById("imagePreview");
+  preview.removeAttribute("src");
+  preview.classList.add("hidden");
+
+  document.getElementById("imageStatus").textContent=
+    "ছবি নির্বাচন করলে Preview দেখা যাবে";
+
   showMessage("message","");
 }
 
@@ -466,6 +509,7 @@ function logout(){
 
 /* AUTO LOGIN */
 if(token)showDashboard();
+
 </script>
 
 </body>
