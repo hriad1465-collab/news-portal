@@ -487,14 +487,19 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-/* FRONTEND */
-app.get(/.*/, (req, res, next) => {
-  if (req.path.startsWith('/api/')) return next();
 
-  res.sendFile(
-    path.join(__dirname, 'public', 'index.html')
-  );
+/* FRONTEND */
+
+// Homepage
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+// Frontend routes
+app.get(/^\/(?!api\/).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 
 /* ERROR HANDLER */
 app.use((err, req, res, next) => {
