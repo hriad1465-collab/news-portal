@@ -1,11 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#b5121b">
-<meta name="description" content="প্রতিদিন বাংলাদেশ - দেশের সর্বশেষ সংবাদ">
+
+<meta name="description" content="প্রতিদিন বাংলাদেশ (Desh Bangla) — জাতীয়, রাজনীতি, আন্তর্জাতিক, খেলাধুলা, বিনোদন, শিক্ষা, অর্থনীতি ও প্রযুক্তির সর্বশেষ সংবাদ পড়ুন।">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="author" content="প্রতিদিন বাংলাদেশ">
+<link rel="canonical" href="https://news-portal-oh0w.onrender.com/">
+
+<meta property="og:locale" content="bn_BD">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="প্রতিদিন বাংলাদেশ">
+<meta property="og:title" content="প্রতিদিন বাংলাদেশ | Desh Bangla">
+<meta property="og:description" content="জাতীয়, রাজনীতি, আন্তর্জাতিক, খেলাধুলা, বিনোদন, শিক্ষা, অর্থনীতি ও প্রযুক্তির সর্বশেষ সংবাদ।">
+<meta property="og:url" content="https://news-portal-oh0w.onrender.com/">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="প্রতিদিন বাংলাদেশ | Desh Bangla">
+<meta name="twitter:description" content="দেশের সর্বশেষ সংবাদ পড়ুন প্রতিদিন বাংলাদেশে।">
+
 <title>প্রতিদিন বাংলাদেশ | Desh Bangla</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,7 +84,11 @@ button,input{font-family:inherit}
 .site-footer p{color:#ccc;font-size:13px}
 .footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:20px;margin-top:15px;font-size:14px}
 .search-result-info{margin:0 0 18px;color:#666;font-size:14px}
-@media(max-width:900px){.news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+@media(max-width:900px){
+.news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 @media(max-width:600px){
 .header-inner{flex-direction:column;text-align:center}
 .logo{font-size:25px}
@@ -133,6 +152,11 @@ button,input{font-family:inherit}
     <a href="/?category=জাতীয়">জাতীয়</a>
     <a href="/?category=রাজনীতি">রাজনীতি</a>
     <a href="/?category=খেলাধুলা">খেলাধুলা</a>
+    <a href="/about.html">আমাদের সম্পর্কে</a>
+    <a href="/contact.html">যোগাযোগ</a>
+    <a href="/privacy-policy.html">Privacy Policy</a>
+    <a href="/editorial-policy.html">সম্পাদনা নীতি</a>
+    <a href="/terms.html">Terms &amp; Conditions</a>
   </div>
 
   <p>© <span id="footerYear"></span> প্রতিদিন বাংলাদেশ। সর্বস্বত্ব সংরক্ষিত।</p>
@@ -293,7 +317,7 @@ return categoryMatch&&searchMatch;
 });
 
 app.innerHTML=`
-<div class="ad-box">বিজ্ঞাপনের জন্য যোগাযোগ করুন</div>
+<div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
 
 <h2 class="section-heading">
 ${searchText?"সার্চের ফলাফল":selectedCategory==="সব খবর"?"সর্বশেষ সংবাদ":selectedCategory+" সংবাদ"}
@@ -322,7 +346,7 @@ filtered.map(newsCard).join(""):
 </div>`}
 </div>
 
-<div class="ad-box">বিজ্ঞাপনের জায়গা</div>
+<div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
 `;
 
 app.querySelectorAll("[data-category]").forEach(function(button){
@@ -432,6 +456,25 @@ const currentURL=location.href;
 
 document.title=title+" | প্রতিদিন বাংলাদেশ";
 
+// প্রতিটি নিউজের জন্য আলাদা SEO description ও canonical URL
+const descriptionText=String(summary||content||title).replace(/\s+/g," ").trim().slice(0,160);
+
+let descriptionTag=document.querySelector('meta[name="description"]');
+if(!descriptionTag){
+descriptionTag=document.createElement("meta");
+descriptionTag.setAttribute("name","description");
+document.head.appendChild(descriptionTag);
+}
+descriptionTag.setAttribute("content",descriptionText);
+
+let canonicalTag=document.querySelector('link[rel="canonical"]');
+if(!canonicalTag){
+canonicalTag=document.createElement("link");
+canonicalTag.setAttribute("rel","canonical");
+document.head.appendChild(canonicalTag);
+}
+canonicalTag.setAttribute("href",currentURL);
+
 function setMeta(property,value){
 let tag=document.querySelector('meta[property="'+property+'"]');
 if(!tag){
@@ -447,6 +490,30 @@ setMeta("og:title",title);
 setMeta("og:description",summary||title);
 setMeta("og:url",currentURL);
 if(image)setMeta("og:image",image);
+setMeta("og:locale","bn_BD");
+
+// NewsArticle Structured Data
+const oldSchema=document.getElementById("newsArticleSchema");
+if(oldSchema)oldSchema.remove();
+
+const schema=document.createElement("script");
+schema.type="application/ld+json";
+schema.id="newsArticleSchema";
+
+schema.textContent=JSON.stringify({
+"@context":"https://schema.org",
+"@type":"NewsArticle",
+"headline":title,
+"description":descriptionText,
+"datePublished":news.created_at||undefined,
+"dateModified":news.updated_at||news.created_at||undefined,
+"author":{"@type":"Person","name":author},
+"publisher":{"@type":"Organization","name":"প্রতিদিন বাংলাদেশ"},
+"mainEntityOfPage":{"@type":"WebPage","@id":currentURL},
+"image":image?[image]:undefined
+});
+
+document.head.appendChild(schema);
 
 const facebookURL="https://www.facebook.com/sharer/sharer.php?u="+
 encodeURIComponent(currentURL);
@@ -476,13 +543,13 @@ onerror="this.style.display='none'">
 
 ${summary?`<div class="news-summary">${esc(summary)}</div>`:""}
 
-<div class="ad-box">বিজ্ঞাপনের জন্য যোগাযোগ করুন</div>
+<div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
 
 <div class="news-content">${esc(content)}</div>
 
 ${videoHTML(news.video_url||news.videoUrl)}
 
-<div class="ad-box">বিজ্ঞাপনের জায়গা</div>
+<div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
 
 <h3 class="section-heading">খবরটি শেয়ার করুন</h3>
 
@@ -503,6 +570,7 @@ target="_blank" rel="noopener noreferrer">WhatsApp Share</a>
 
 document.getElementById("copyNewsLink").addEventListener("click",async function(){
 const button=this;
+
 try{
 if(navigator.clipboard&&window.isSecureContext){
 await navigator.clipboard.writeText(currentURL);
@@ -513,11 +581,15 @@ input.style.position="fixed";
 input.style.opacity="0";
 document.body.appendChild(input);
 input.select();
+
 const copied=document.execCommand("copy");
 input.remove();
+
 if(!copied)throw new Error("Copy failed");
 }
+
 button.textContent="লিংক কপি হয়েছে";
+
 }catch(error){
 window.prompt("এই লিংকটি কপি করুন:",currentURL);
 }
@@ -528,6 +600,7 @@ if(!navigator.share){
 window.prompt("এই লিংকটি কপি করুন:",currentURL);
 return;
 }
+
 try{
 await navigator.share({
 title:title,
@@ -543,6 +616,7 @@ return true;
 
 }catch(error){
 console.error("Details Error:",error);
+
 app.innerHTML=`
 <div class="news-detail-page">
 <div class="no-news">
@@ -551,6 +625,7 @@ app.innerHTML=`
 <a href="/" class="read-more">হোমপেজে ফিরে যান</a>
 </div>
 </div>`;
+
 return true;
 }
 }
