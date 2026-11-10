@@ -4,900 +4,582 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#b5121b">
-
-<meta name="description" content="প্রতিদিন বাংলাদেশ (Desh Bangla) — জাতীয়, রাজনীতি, আন্তর্জাতিক, খেলাধুলা, বিনোদন, শিক্ষা, অর্থনীতি ও প্রযুক্তির সর্বশেষ সংবাদ পড়ুন।">
-<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="description" content="প্রতিদিন বাংলাদেশ - দেশের সর্বশেষ সংবাদ, রাজনীতি, আন্তর্জাতিক, খেলাধুলা, বিনোদন ও শিক্ষা।">
+<meta name="robots" content="index, follow">
 <meta name="author" content="প্রতিদিন বাংলাদেশ">
-
 <link rel="canonical" href="https://news-portal-oh0w.onrender.com/">
-
-<meta property="og:locale" content="bn_BD">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="প্রতিদিন বাংলাদেশ">
 <meta property="og:title" content="প্রতিদিন বাংলাদেশ | Desh Bangla">
-<meta property="og:description" content="জাতীয়, রাজনীতি, আন্তর্জাতিক, খেলাধুলা, বিনোদন, শিক্ষা, অর্থনীতি ও প্রযুক্তির সর্বশেষ সংবাদ।">
+<meta property="og:description" content="দেশের সর্বশেষ সংবাদ জানতে চোখ রাখুন প্রতিদিন বাংলাদেশে।">
 <meta property="og:url" content="https://news-portal-oh0w.onrender.com/">
-
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="প্রতিদিন বাংলাদেশ | Desh Bangla">
-<meta name="twitter:description" content="দেশের সর্বশেষ সংবাদ পড়ুন প্রতিদিন বাংলাদেশে।">
-
 <title>প্রতিদিন বাংলাদেশ | Desh Bangla</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f4f5f7;color:#222;font-family:Arial,"Noto Sans Bengali",sans-serif}
+body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f4f5f7;color:#222}
 a{text-decoration:none;color:inherit}
 button,input{font-family:inherit}
-
-.site-header{background:#fff;border-bottom:3px solid #b5121b}
-.topbar{background:#a40d16;color:white;padding:8px 5%;font-size:13px}
-.header-inner{max-width:1250px;margin:auto;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:20px}
-.logo{color:#b5121b;font-size:30px;font-weight:800}
-.logo small{display:block;font-size:12px;color:#666;font-weight:400;margin-top:3px}
-
-.header-search{display:flex;max-width:430px;width:100%}
-.header-search input{width:100%;min-width:0;padding:11px;border:1px solid #ddd;border-radius:5px 0 0 5px;outline:none}
-.header-search input:focus{border-color:#b5121b}
-.header-search button{background:#b5121b;color:white;border:0;padding:0 20px;cursor:pointer;border-radius:0 5px 5px 0}
-
-.navbar{background:#b5121b;color:white}
-.nav-inner{max-width:1250px;margin:auto;display:flex;padding:0 15px;overflow-x:auto}
-.nav-inner a{display:block;padding:13px 15px;white-space:nowrap;font-size:14px}
-.nav-inner a:hover,.nav-inner a.active{background:#850b13}
-
-.container{max-width:1250px;margin:25px auto;padding:0 15px;min-height:400px}
-.section-heading{font-size:23px;font-weight:700;border-left:5px solid #b5121b;padding-left:12px;margin:0 0 22px}
-
-.category-list{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:25px}
-.category-btn{background:white;border:1px solid #ddd;padding:9px 16px;border-radius:20px;cursor:pointer;color:#444;font-size:14px}
-.category-btn.active,.category-btn:hover{background:#b5121b;color:white;border-color:#b5121b}
-
-.news-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.news-card{background:white;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px #0000000f;transition:.2s}
-.news-card:hover{transform:translateY(-4px);box-shadow:0 5px 18px #0000001c}
-.news-card img{display:block;width:100%;height:220px;object-fit:cover;background:#eee}
-.no-image{height:220px;background:#eee;display:flex;align-items:center;justify-content:center;color:#999}
-.news-card-body{padding:17px}
-.card-category{display:inline-block;color:#b5121b;background:#fff0f0;padding:5px 10px;border-radius:4px;font-size:12px;margin-bottom:10px}
-.news-card h3{font-size:19px;line-height:1.7;margin:0 0 10px}
-.news-card p{color:#666;font-size:14px;line-height:1.8;margin:0 0 12px}
-.card-meta{color:#888;font-size:12px;margin-bottom:13px}
-.read-more{display:inline-block;background:#b5121b;color:white;padding:9px 15px;border-radius:4px;font-size:13px;border:0;cursor:pointer}
-.read-more:hover{background:#850b13}
-
-.no-news,.loading{background:white;padding:40px 15px;text-align:center;border-radius:7px;color:#777;line-height:2}
-.ad-box{background:white;border:1px dashed #bbb;min-height:100px;margin:25px 0;display:flex;align-items:center;justify-content:center;text-align:center;color:#999;font-size:14px;padding:15px}
-
-.news-detail-page{max-width:900px;margin:10px auto 35px;padding:25px;background:white;border-radius:8px;box-shadow:0 2px 15px #00000012}
-.back-news{display:inline-block;color:#b5121b;font-weight:bold;margin-bottom:20px}
-.news-category{display:inline-block;background:#fff0f0;color:#b5121b;padding:7px 13px;border-radius:5px;font-size:14px}
-.news-detail-page h1{font-size:32px;line-height:1.7;margin:18px 0}
-.news-meta{color:#777;font-size:14px;line-height:2;margin-bottom:20px}
-.news-cover{display:block;width:100%;max-height:560px;object-fit:contain;background:#eee;border-radius:7px;margin:20px 0}
-.news-summary{background:#f8f8f8;border-left:4px solid #b5121b;padding:15px;margin:20px 0;font-size:18px;font-weight:600;line-height:2}
-.news-content{font-size:19px;line-height:2.1;white-space:pre-wrap;overflow-wrap:anywhere;margin:25px 0}
-.news-video{margin:25px 0}
-.news-video iframe,.news-video video{width:100%;aspect-ratio:16/9;border:0;border-radius:7px;background:#000}
-
-.news-share{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 30px}
-.news-share a,.news-share button{border:0;padding:12px 18px;color:white;border-radius:5px;cursor:pointer;font-size:14px}
-.facebook-share{background:#1877f2}
-.whatsapp-share{background:#168b45}
-.copy-share{background:#555}
-.native-share{background:#b5121b}
-
-.site-footer{background:#202020;color:white;padding:35px 20px;text-align:center;line-height:2}
-.site-footer strong{font-size:23px}
-.site-footer p{color:#ccc;font-size:13px}
-.footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:20px;margin-top:15px;font-size:14px}
-.search-result-info{margin:0 0 18px;color:#666;font-size:14px}
-
-/* নতুন তথ্য পেজের ডিজাইন */
-.info-page{max-width:900px;margin:10px auto 35px;padding:28px;background:#fff;border-radius:8px;box-shadow:0 2px 15px #00000012;line-height:2}
-.info-page h1{font-size:29px;color:#b5121b;margin:0 0 18px;border-bottom:2px solid #f1d5d7;padding-bottom:12px}
-.info-page h2{font-size:20px;margin:24px 0 8px;color:#333}
-.info-page p,.info-page li{font-size:16px;color:#444;line-height:2}
-.info-page ul{padding-left:25px}
-.info-note{background:#fff8e8;border-left:4px solid #d49a19;padding:12px 15px;margin:18px 0;color:#664d12}
+.topbar{background:#8f0e16;color:#fff;padding:7px 5%;font-size:13px}
+.header{background:#b5121b;color:#fff;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.logo{font-size:30px;font-weight:800}
+.logo small{display:block;font-size:12px;font-weight:400;margin-top:3px}
+.header-right{display:flex;gap:8px;align-items:center}
+.header-right input{padding:10px;border:0;border-radius:5px;min-width:180px}
+.header-right button{padding:10px 15px;border:0;border-radius:5px;background:#222;color:#fff;cursor:pointer}
+.navbar{background:#222;color:#fff;padding:0 5%;display:flex;gap:0;flex-wrap:wrap}
+.navbar a{padding:13px 15px;font-size:14px}
+.navbar a:hover{background:#b5121b}
+.container{max-width:1200px;margin:25px auto;padding:0 15px}
+.section-title{border-left:5px solid #b5121b;padding-left:12px;margin:25px 0 18px;font-size:23px}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.news-card{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.07);transition:.2s}
+.news-card:hover{transform:translateY(-3px)}
+.news-card img{width:100%;height:210px;object-fit:cover;display:block;background:#eee}
+.news-content{padding:15px}
+.category{display:inline-block;background:#b5121b;color:#fff;padding:4px 9px;border-radius:3px;font-size:12px;margin-bottom:8px}
+.news-content h3{font-size:19px;line-height:1.5;margin:5px 0 10px}
+.news-content p{font-size:14px;color:#666;line-height:1.7;margin:0 0 12px}
+.read-more{display:inline-block;background:#b5121b;color:#fff;padding:8px 13px;border-radius:4px;font-size:13px}
+.read-more:hover{background:#8f0e16}
+.news-meta{font-size:12px;color:#888;margin-top:10px}
+.ad-area{background:#fff;border:1px dashed #bbb;text-align:center;padding:25px 10px;margin:22px 0;color:#888;min-height:90px}
+.loading,.empty{text-align:center;background:#fff;padding:35px;margin:20px 0;border-radius:8px}
+.pagination{text-align:center;margin:25px 0}
+.pagination button{padding:9px 15px;border:0;background:#b5121b;color:#fff;border-radius:4px;cursor:pointer;margin:3px}
+.details-page{max-width:900px;margin:25px auto;background:#fff;padding:25px;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.details-page h1{font-size:30px;line-height:1.5;margin:12px 0}
+.details-page .detail-image{width:100%;max-height:500px;object-fit:cover;border-radius:7px;margin:15px 0}
+.details-page .article-body{font-size:18px;line-height:2;color:#333;white-space:pre-wrap}
+.details-page .article-meta{color:#777;font-size:13px;margin:12px 0}
+.details-page .article-video{width:100%;max-height:480px;margin:15px 0}
+.share-area{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0}
+.share-area a,.share-area button{border:0;padding:10px 14px;color:#fff;border-radius:4px;cursor:pointer;font-size:14px}
+.share-facebook{background:#1877f2}
+.share-whatsapp{background:#25d366}
+.share-copy{background:#444}
+.info-page{max-width:900px;margin:25px auto;background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.07);line-height:1.9}
+.info-page h1{color:#b5121b;font-size:28px;margin-top:0}
+.info-page h2{font-size:20px;margin-top:25px}
+.info-page p{font-size:16px;color:#444}
+.info-note{background:#f8f8f8;border-left:4px solid #b5121b;padding:15px;margin:15px 0}
 .info-page a{color:#b5121b;text-decoration:underline}
-
-@media(max-width:900px){
-.news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+footer{background:#222;color:#ddd;margin-top:40px;padding:35px 5% 20px}
+.footer-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
+footer h3{color:#fff;margin-top:0}
+footer p{font-size:14px;line-height:1.8;color:#ccc}
+footer a{display:block;font-size:14px;margin:9px 0;color:#ddd}
+footer a:hover{color:#fff;text-decoration:underline}
+.footer-bottom{border-top:1px solid #444;margin-top:25px;padding-top:15px;text-align:center;font-size:13px;color:#aaa}
+@media(max-width:800px){
+.news-grid{grid-template-columns:repeat(2,1fr)}
+.footer-inner{grid-template-columns:1fr 1fr}
 }
-
-@media(max-width:600px){
-.header-inner{flex-direction:column;text-align:center}
-.logo{font-size:25px}
-.header-search{max-width:100%}
+@media(max-width:550px){
+.logo{font-size:24px}
+.header{padding:15px 4%}
+.header-right{width:100%}
+.header-right input{flex:1;min-width:0}
+.navbar{padding:0 2%;overflow-x:auto;flex-wrap:nowrap}
+.navbar a{white-space:nowrap;padding:12px 10px;font-size:13px}
+.container{padding:0 10px}
 .news-grid{grid-template-columns:1fr;gap:15px}
-.news-card img,.no-image{height:220px}
-.news-card h3{font-size:17px}
-.container{margin:15px auto}
-.news-detail-page{padding:15px;margin:5px auto 20px}
-.news-detail-page h1{font-size:23px}
-.news-content{font-size:17px;line-height:2}
-.news-summary{font-size:16px}
-.news-cover{max-height:350px}
-.news-share a,.news-share button{flex:1 1 40%;text-align:center;padding:11px 8px;font-size:13px}
-.info-page{padding:17px;margin:5px auto 20px}
-.info-page h1{font-size:23px}
-.info-page p,.info-page li{font-size:15px}
+.news-card img{height:220px}
+.details-page{padding:15px;margin:15px 10px}
+.details-page h1{font-size:23px}
+.details-page .article-body{font-size:16px}
+.info-page{padding:20px;margin:15px 10px}
+.footer-inner{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
+<div class="topbar">
+  <span id="todayDate"></span>
+</div>
 
-<header class="site-header">
-  <div class="topbar">প্রতিদিন বাংলাদেশ | সত্যের পথে, দেশের সাথে</div>
-
-  <div class="header-inner">
-    <a href="/" class="logo">
-      প্রতিদিন বাংলাদেশ
-      <small>DESH BANGLA NEWS PORTAL</small>
-    </a>
-
-    <form class="header-search" id="searchForm">
-      <input type="search" id="searchInput" placeholder="খবর খুঁজুন..." aria-label="খবর খুঁজুন">
-      <button type="submit">খুঁজুন</button>
-    </form>
+<header class="header">
+  <a href="/" class="logo">
+    প্রতিদিন বাংলাদেশ
+    <small>Desh Bangla | সত্যের সন্ধানে প্রতিদিন</small>
+  </a>
+  <div class="header-right">
+    <input type="search" id="searchInput" placeholder="সংবাদ খুঁজুন...">
+    <button id="searchButton">খুঁজুন</button>
   </div>
-
-  <nav class="navbar">
-    <div class="nav-inner" id="mainNav">
-      <a href="/" data-nav="সব খবর">প্রচ্ছদ</a>
-      <a href="/?category=জাতীয়" data-nav="জাতীয়">জাতীয়</a>
-      <a href="/?category=রাজনীতি" data-nav="রাজনীতি">রাজনীতি</a>
-      <a href="/?category=আন্তর্জাতিক" data-nav="আন্তর্জাতিক">আন্তর্জাতিক</a>
-      <a href="/?category=খেলাধুলা" data-nav="খেলাধুলা">খেলাধুলা</a>
-      <a href="/?category=বিনোদন" data-nav="বিনোদন">বিনোদন</a>
-      <a href="/?category=শিক্ষা" data-nav="শিক্ষা">শিক্ষা</a>
-      <a href="/?category=অর্থনীতি" data-nav="অর্থনীতি">অর্থনীতি</a>
-      <a href="/?category=প্রযুক্তি" data-nav="প্রযুক্তি">প্রযুক্তি</a>
-    </div>
-  </nav>
 </header>
 
-<main class="container" id="app">
-  <div class="loading">খবর লোড হচ্ছে...</div>
+<nav class="navbar">
+  <a href="/">প্রচ্ছদ</a>
+  <a href="/?category=জাতীয়">জাতীয়</a>
+  <a href="/?category=রাজনীতি">রাজনীতি</a>
+  <a href="/?category=আন্তর্জাতিক">আন্তর্জাতিক</a>
+  <a href="/?category=খেলাধুলা">খেলাধুলা</a>
+  <a href="/?category=বিনোদন">বিনোদন</a>
+  <a href="/?category=শিক্ষা">শিক্ষা</a>
+  <a href="/?category=অর্থনীতি">অর্থনীতি</a>
+  <a href="/?category=প্রযুক্তি">প্রযুক্তি</a>
+</nav>
+
+<main class="container" id="mainContent">
+  <div class="loading">সংবাদ লোড হচ্ছে...</div>
 </main>
 
-<footer class="site-footer">
-  <strong>প্রতিদিন বাংলাদেশ</strong>
-  <p>সত্যের পথে, দেশের সাথে</p>
-
-  <div class="footer-links">
-    <a href="/">প্রচ্ছদ</a>
-    <a href="/?category=জাতীয়">জাতীয়</a>
-    <a href="/?category=রাজনীতি">রাজনীতি</a>
-    <a href="/?category=খেলাধুলা">খেলাধুলা</a>
-    <a href="/?page=about">আমাদের সম্পর্কে</a>
-    <a href="/?page=contact">যোগাযোগ</a>
-    <a href="/?page=privacy">Privacy Policy</a>
-    <a href="/?page=editorial">সম্পাদনা নীতি</a>
-    <a href="/?page=terms">Terms &amp; Conditions</a>
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h3>প্রতিদিন বাংলাদেশ</h3>
+      <p>প্রতিদিন বাংলাদেশ একটি অনলাইন সংবাদমাধ্যম। দেশের সর্বশেষ সংবাদ, রাজনীতি, আন্তর্জাতিক, খেলাধুলা, বিনোদন, শিক্ষা ও অর্থনীতির খবর জানতে আমাদের সঙ্গে থাকুন।</p>
+    </div>
+    <div>
+      <h3>গুরুত্বপূর্ণ লিংক</h3>
+      <a href="/?page=about">আমাদের সম্পর্কে</a>
+      <a href="/?page=contact">যোগাযোগ</a>
+      <a href="/?page=privacy">গোপনীয়তা নীতি</a>
+      <a href="/?page=editorial">সম্পাদকীয় নীতিমালা</a>
+      <a href="/?page=terms">ব্যবহারের শর্তাবলি</a>
+    </div>
+    <div>
+      <h3>যোগাযোগ</h3>
+      <p>ইমেইল: <a href="mailto:rashelahmed122@gmail.com">rashelahmed122@gmail.com</a></p>
+      <p>ফোন: <a href="tel:+8801567906919">01567-906919</a></p>
+    </div>
   </div>
-
-  <p>© <span id="footerYear"></span> প্রতিদিন বাংলাদেশ। সর্বস্বত্ব সংরক্ষিত।</p>
+  <div class="footer-bottom">
+    © <span id="copyrightYear"></span> প্রতিদিন বাংলাদেশ | সর্বস্বত্ব সংরক্ষিত।
+  </div>
 </footer>
 
 <script>
-(function(){
-"use strict";
+const API_BASE = "";
+const mainContent = document.getElementById("mainContent");
 
-const app=document.getElementById("app");
+document.getElementById("todayDate").textContent =
+  new Date().toLocaleDateString("bn-BD", {
+    weekday:"long", year:"numeric", month:"long", day:"numeric"
+  });
 
-const categories=[
-"সব খবর","জাতীয়","রাজনীতি","আন্তর্জাতিক",
-"খেলাধুলা","বিনোদন","শিক্ষা","অর্থনীতি","প্রযুক্তি"
-];
+document.getElementById("copyrightYear").textContent =
+  new Date().getFullYear();
 
-let allNews=[];
-let selectedCategory="সব খবর";
-let searchText="";
-
-document.getElementById("footerYear").textContent=new Date().getFullYear();
-
-function esc(value){
-return String(value??"").replace(/[&<>"']/g,function(c){
-return {
-"&":"&amp;","<":"&lt;",">":"&gt;",
-'"':"&quot;","'":"&#039;"
-}[c];
-});
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function(char) {
+    return {
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[char];
+  });
 }
 
-function safeURL(value){
-if(!value)return "";
-try{
-const u=new URL(String(value),location.origin);
-if(!["http:","https:"].includes(u.protocol))return "";
-return u.href;
-}catch(e){return "";}
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
 }
 
-function dateText(value){
-if(!value)return "";
-const d=new Date(value);
-if(isNaN(d.getTime()))return "";
-return d.toLocaleDateString("bn-BD",{
-year:"numeric",month:"long",day:"numeric"
-});
+function formatDate(date) {
+  if (!date) return "";
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("bn-BD", {
+    year:"numeric", month:"long", day:"numeric"
+  });
 }
 
-function newsImage(news){
-return safeURL(
-news.cover_url||news.coverUrl||
-news.image_url||news.imageUrl||news.image||""
-);
+function getNewsImage(news) {
+  return news.image_url || news.image || news.thumbnail || "";
 }
 
-function getSlug(news){
-return String(news.slug||news.id||"");
+function getNewsTitle(news) {
+  return news.title || news.heading || "শিরোনাম নেই";
 }
 
-function newsLink(news){
-return "/news/"+encodeURIComponent(getSlug(news));
+function getNewsSummary(news) {
+  return news.summary || news.description || news.content || "";
 }
 
-function videoHTML(value){
-const url=safeURL(value);
-if(!url)return "";
+function newsCard(news) {
+  const title = getNewsTitle(news);
+  const image = getNewsImage(news);
+  const summary = getNewsSummary(news);
+  const category = news.category || "সংবাদ";
+  const slug = news.slug || news.id || "";
 
-try{
-const u=new URL(url);
-let id="";
-
-if(u.hostname==="youtu.be"){
-id=u.pathname.slice(1);
-}else if(
-u.hostname.includes("youtube.com")||
-u.hostname.includes("youtube-nocookie.com")
-){
-id=u.searchParams.get("v")||"";
-if(!id&&u.pathname.startsWith("/embed/")){
-id=u.pathname.split("/")[2]||"";
-}
-}
-
-if(id&&/^[a-zA-Z0-9_-]{6,20}$/.test(id)){
-return `
-<div class="news-video">
-<iframe src="https://www.youtube-nocookie.com/embed/${esc(id)}"
-title="খবরের ভিডিও" loading="lazy" allowfullscreen></iframe>
-</div>`;
+  return `
+    <article class="news-card">
+      <a href="/?news=${encodeURIComponent(slug)}">
+        ${image ? `<img src="${esc(image)}" alt="${esc(title)}" loading="lazy">` : ""}
+      </a>
+      <div class="news-content">
+        <span class="category">${esc(category)}</span>
+        <h3><a href="/?news=${encodeURIComponent(slug)}">${esc(title)}</a></h3>
+        <p>${esc(summary).slice(0,150)}${summary.length > 150 ? "..." : ""}</p>
+        <a class="read-more" href="/?news=${encodeURIComponent(slug)}">বিস্তারিত পড়ুন</a>
+        <div class="news-meta">${formatDate(news.created_at || news.date)}</div>
+      </div>
+    </article>
+  `;
 }
 
-if(/\.(mp4|webm|ogg)(\?.*)?$/i.test(u.pathname)){
-return `
-<div class="news-video">
-<video controls preload="metadata">
-<source src="${esc(url)}">
-আপনার ব্রাউজার ভিডিও চালাতে পারছে না।
-</video>
-</div>`;
+async function fetchNews() {
+  const response = await fetch(`${API_BASE}/api/news?limit=100`);
+  if (!response.ok) throw new Error("সংবাদ লোড করা যায়নি");
+  const result = await response.json();
+  return Array.isArray(result) ? result : (result.news || result.data || []);
 }
 
-return `
-<p><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">ভিডিও দেখুন</a></p>`;
-}catch(e){return "";}
+async function loadHome() {
+  mainContent.innerHTML = `<div class="loading">সংবাদ লোড হচ্ছে...</div>`;
+
+  try {
+    let news = await fetchNews();
+
+    const category = getParam("category");
+    const search = getParam("search");
+
+    if (category) {
+      news = news.filter(item => item.category === category);
+    }
+
+    if (search) {
+      const keyword = search.toLowerCase();
+      news = news.filter(item =>
+        `${getNewsTitle(item)} ${getNewsSummary(item)} ${item.category || ""}`
+          .toLowerCase().includes(keyword)
+      );
+    }
+
+    if (!news.length) {
+      mainContent.innerHTML = `<div class="empty">কোনো সংবাদ পাওয়া যায়নি।</div>`;
+      return;
+    }
+
+    let heading = category ? category + " বিভাগ" : "সর্বশেষ সংবাদ";
+    if (search) heading = `"${esc(search)}" অনুসন্ধানের ফলাফল`;
+
+    mainContent.innerHTML = `
+      <h2 class="section-title">${heading}</h2>
+      <div class="news-grid">
+        ${news.map(newsCard).join("")}
+      </div>
+    `;
+  } catch (error) {
+    mainContent.innerHTML = `
+      <div class="empty">
+        সংবাদ লোড করা যাচ্ছে না। কিছুক্ষণ পর আবার চেষ্টা করুন।
+      </div>
+    `;
+    console.error(error);
+  }
 }
 
-function newsCard(news){
-const image=newsImage(news);
-const link=newsLink(news);
-const title=news.title||"শিরোনাম নেই";
-const summary=news.summary||String(news.content||"").slice(0,150);
-
-return `
-<article class="news-card">
-<a href="${esc(link)}">
-${image?
-`<img src="${esc(image)}" alt="${esc(title)}" loading="lazy"
-onerror="this.style.display='none'">`:
-`<div class="no-image">ছবি নেই</div>`}
-</a>
-
-<div class="news-card-body">
-<span class="card-category">${esc(news.category||"জাতীয়")}</span>
-<a href="${esc(link)}"><h3>${esc(title)}</h3></a>
-<p>${esc(summary)}</p>
-<div class="card-meta">
-${esc(news.author||"ডেস্ক রিপোর্ট")}
-${news.created_at?" | "+esc(dateText(news.created_at)):""}
-</div>
-<a class="read-more" href="${esc(link)}">বিস্তারিত পড়ুন →</a>
-</div>
-</article>`;
-}
-
-function updateNavigation(){
-document.querySelectorAll("#mainNav a").forEach(function(a){
-const category=a.dataset.nav;
-a.classList.toggle("active",
-location.pathname==="/"&&category===selectedCategory);
-});
-}
-
-function renderHome(){
-const query=searchText.trim().toLocaleLowerCase("bn");
-
-const filtered=allNews.filter(function(news){
-const categoryMatch=
-selectedCategory==="সব খবর"||news.category===selectedCategory;
-
-const searchable=[
-news.title,news.summary,news.content,news.category,news.author
-].join(" ").toLocaleLowerCase("bn");
-
-const searchMatch=!query||searchable.includes(query);
-
-return categoryMatch&&searchMatch;
-});
-
-app.innerHTML=`
-<div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
-
-<h2 class="section-heading">
-${searchText?"সার্চের ফলাফল":selectedCategory==="সব খবর"?"সর্বশেষ সংবাদ":selectedCategory+" সংবাদ"}
-</h2>
-
-${searchText?`<p class="search-result-info">
-"${esc(searchText)}" অনুসন্ধানে ${filtered.length}টি খবর পাওয়া গেছে।
-</p>`:""}
-
-<div class="category-list">
-${categories.map(function(cat){
-return `
-<button type="button"
-class="category-btn ${selectedCategory===cat?"active":""}"
-data-category="${esc(cat)}">${esc(cat)}</button>`;
-}).join("")}
-</div>
-
-<div class="news-grid">
-${filtered.length?
-filtered.map(newsCard).join(""):
-`<div class="no-news" style="grid-column:1/-1">
-<h3>কোনো খবর পাওয়া যায়নি!</h3>
-<p>অন্য শব্দ দিয়ে সার্চ করুন অথবা অন্য বিভাগ নির্বাচন করুন।</p>
-<button class="category-btn" id="clearSearch">সব খবর দেখুন</button>
-</div>`}
-</div>
-
-<div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
-`;
-
-app.querySelectorAll("[data-category]").forEach(function(button){
-button.addEventListener("click",function(){
-selectedCategory=this.dataset.category;
-updateURL();
-renderHome();
-});
-});
-
-const clearButton=document.getElementById("clearSearch");
-if(clearButton){
-clearButton.addEventListener("click",function(){
-searchText="";
-selectedCategory="সব খবর";
-document.getElementById("searchInput").value="";
-updateURL();
-renderHome();
-});
-}
-
-updateNavigation();
-}
-
-function updateURL(){
-const params=new URLSearchParams();
-if(selectedCategory!=="সব খবর")params.set("category",selectedCategory);
-if(searchText.trim())params.set("q",searchText.trim());
-
-const query=params.toString();
-history.replaceState({}, "", "/"+(query?"?"+query:""));
-}
-
-/* =================================
-   নতুন পেজগুলোর সম্পূর্ণ কনটেন্ট
-================================= */
-
-function renderInfoPage(pageKey){
-
-const pages={
-
-about:{
-title:"আমাদের সম্পর্কে",
-html:`
-<h1>আমাদের সম্পর্কে</h1>
-
-<p><strong>প্রতিদিন বাংলাদেশ (Desh Bangla)</strong> একটি অনলাইন সংবাদমাধ্যম। আমাদের লক্ষ্য হলো পাঠকদের কাছে দেশ ও বিশ্বের গুরুত্বপূর্ণ ঘটনা, তথ্য এবং সংবাদ সহজ, স্পষ্ট ও দায়িত্বশীলভাবে তুলে ধরা।</p>
-
-<h2>আমাদের উদ্দেশ্য</h2>
-
-<p>জাতীয়, রাজনীতি, আন্তর্জাতিক, খেলাধুলা, বিনোদন, শিক্ষা, অর্থনীতি ও প্রযুক্তিসহ বিভিন্ন বিষয়ে পাঠকদের জন্য প্রাসঙ্গিক সংবাদ প্রকাশ করা। আমরা তথ্যের যথার্থতা, পাঠযোগ্যতা এবং জনস্বার্থকে গুরুত্ব দেওয়ার চেষ্টা করি।</p>
-
-<h2>আমাদের অঙ্গীকার</h2>
-
-<ul>
-<li>সংবাদ প্রকাশের আগে তথ্য যাচাই করার চেষ্টা করা।</li>
-<li>ভুল তথ্য ধরা পড়লে সংশোধনের উদ্যোগ নেওয়া।</li>
-<li>সংবাদ ও মতামতকে যথাসম্ভব আলাদা রাখা।</li>
-<li>পাঠকের মতামত ও অভিযোগ গুরুত্বের সঙ্গে বিবেচনা করা।</li>
-</ul>
-
-<p>প্রতিদিন বাংলাদেশ সম্পর্কে মতামত, পরামর্শ বা সংশোধনের অনুরোধ জানাতে আমাদের যোগাযোগ পেজ ব্যবহার করুন।</p>
-`
-},
-
-contact:{
-title:"যোগাযোগ",
-html:`
-<h1>যোগাযোগ</h1>
-
-<p>প্রতিদিন বাংলাদেশে প্রকাশিত কোনো সংবাদ সম্পর্কে মতামত, তথ্য সংশোধনের অনুরোধ, অভিযোগ, সংবাদ প্রস্তাব বা সাধারণ যোগাযোগের জন্য আমাদের সঙ্গে যোগাযোগ করতে পারেন।</p>
-
-<h2>কীভাবে যোগাযোগ করবেন</h2>
-
-<p>আপনার বার্তায় সংশ্লিষ্ট সংবাদটির শিরোনাম ও লিংক উল্লেখ করুন। কোনো তথ্য সংশোধনের অনুরোধ করলে সঠিক তথ্যের পক্ষে নির্ভরযোগ্য সূত্র বা প্রমাণ যুক্ত করুন।</p>
-
-<div class="info-note">
-<strong>প্রকাশের আগে এই অংশটি পূরণ করুন:</strong><br>
-অফিসিয়াল যোগাযোগ ইমেইল:
-<strong>[এখানে আপনার সক্রিয় ইমেইল ঠিকানা লিখুন]</strong><br>
-অফিসিয়াল ফোন নম্বর (ঐচ্ছিক):
-<strong>[এখানে ফোন নম্বর লিখুন]</strong>
-</div>
-
-<p>যোগাযোগের তথ্য হালনাগাদ না করা পর্যন্ত এই পেজে কোনো কাল্পনিক ইমেইল বা ফোন নম্বর ব্যবহার করবেন না।</p>
-`
-},
-
-privacy:{
-title:"Privacy Policy",
-html:`
-<h1>গোপনীয়তা নীতি (Privacy Policy)</h1>
-
-<p>প্রতিদিন বাংলাদেশ (Desh Bangla) আমাদের ওয়েবসাইট ব্যবহারকারীদের গোপনীয়তাকে সম্মান করে। এই নীতিতে ওয়েবসাইট ব্যবহারের সময় তথ্য কীভাবে সংগ্রহ, ব্যবহার ও সুরক্ষিত রাখা হতে পারে তা ব্যাখ্যা করা হয়েছে।</p>
-
-<h2>তথ্য সংগ্রহ</h2>
-
-<p>আপনি নিজে যোগাযোগের জন্য কোনো তথ্য পাঠালে, আপনার পাঠানো তথ্য—যেমন নাম, ইমেইল ঠিকানা ও বার্তার বিষয়বস্তু—যোগাযোগের উদ্দেশ্যে ব্যবহার করা হতে পারে। ওয়েবসাইটের সার্ভার নিরাপত্তা ও কার্যকারিতা বজায় রাখতে প্রযুক্তিগত লগ, যেমন IP address, browser type এবং অ্যাক্সেসের সময় সংরক্ষণ করতে পারে; এটি আপনার হোস্টিং ও সার্ভার কনফিগারেশনের ওপর নির্ভরশীল।</p>
-
-<h2>Cookies ও অনুরূপ প্রযুক্তি</h2>
-
-<p>ওয়েবসাইটের কার্যকারিতা, নিরাপত্তা, ট্রাফিক পরিমাপ বা বিজ্ঞাপন প্রদর্শনের জন্য Cookies বা অনুরূপ প্রযুক্তি ব্যবহার করা হতে পারে। আপনি ব্রাউজারের সেটিংস থেকে Cookies নিয়ন্ত্রণ বা বন্ধ করতে পারেন; এতে ওয়েবসাইটের কিছু সুবিধা প্রভাবিত হতে পারে।</p>
-
-<h2>Google AdSense ও তৃতীয় পক্ষের বিজ্ঞাপন</h2>
-
-<p>এই ওয়েবসাইটে Google AdSense বা অন্য বিজ্ঞাপন সেবা চালু করা হলে তৃতীয় পক্ষের বিক্রেতারা Cookies ব্যবহার করে আপনার এই বা অন্য ওয়েবসাইটে পূর্ববর্তী ভিজিটের ভিত্তিতে বিজ্ঞাপন দেখাতে পারে। Google-এর বিজ্ঞাপন Cookies ব্যবহারের বিষয়ে বিস্তারিত জানতে Google Advertising Policies ও Google-এর বিজ্ঞাপন/গোপনীয়তা সেটিংস দেখুন। ব্যক্তিগতকৃত বিজ্ঞাপন নিয়ন্ত্রণের সুবিধা আপনার অঞ্চলে ও Google-এর বর্তমান সেটিংস অনুযায়ী পরিবর্তিত হতে পারে।</p>
-
-<h2>তৃতীয় পক্ষের লিংক</h2>
-
-<p>আমাদের সংবাদ বা পেজে অন্য ওয়েবসাইটের লিংক থাকতে পারে। সেই ওয়েবসাইটগুলোর গোপনীয়তা নীতি ও কার্যক্রমের জন্য সংশ্লিষ্ট ওয়েবসাইট কর্তৃপক্ষ দায়ী।</p>
-
-<h2>শিশুদের গোপনীয়তা</h2>
-
-<p>আমাদের ওয়েবসাইট সাধারণ পাঠকের জন্য। শিশুদের কাছ থেকে জেনে-বুঝে ব্যক্তিগত তথ্য সংগ্রহ করার উদ্দেশ্য আমাদের নেই।</p>
-
-<h2>নীতির পরিবর্তন</h2>
-
-<p>প্রয়োজন অনুযায়ী এই গোপনীয়তা নীতি হালনাগাদ করা হতে পারে। পরিবর্তিত নীতি এই পেজে প্রকাশ করা হবে।</p>
-
-<h2>যোগাযোগ</h2>
-
-<p>গোপনীয়তা নীতি সম্পর্কে প্রশ্ন থাকলে আমাদের <a href="/?page=contact">যোগাযোগ পেজে</a> দেওয়া অফিসিয়াল যোগাযোগের মাধ্যমে বার্তা পাঠান।</p>
-
-<p><strong>সর্বশেষ হালনাগাদ:</strong> ১০ নভেম্বর ২০২৬</p>
-`
-},
-
-editorial:{
-title:"সম্পাদনা নীতি",
-html:`
-<h1>সম্পাদনা নীতি (Editorial Policy)</h1>
-
-<p>প্রতিদিন বাংলাদেশ পাঠকদের কাছে দায়িত্বশীল, প্রাসঙ্গিক ও যথাসম্ভব নির্ভুল সংবাদ পৌঁছে দেওয়ার চেষ্টা করে। সংবাদ সংগ্রহ, যাচাই, সম্পাদনা ও সংশোধনের ক্ষেত্রে নিচের নীতিগুলো অনুসরণ করার অঙ্গীকার করা হচ্ছে।</p>
-
-<h2>তথ্য যাচাই</h2>
-
-<p>সংবাদ প্রকাশের আগে প্রাপ্ত তথ্যের নির্ভরযোগ্যতা যাচাই করার চেষ্টা করা হয়। গুরুত্বপূর্ণ বা সংবেদনশীল বিষয়ে সম্ভব হলে একাধিক সূত্র, প্রত্যক্ষ বক্তব্য এবং প্রাসঙ্গিক নথি মিলিয়ে দেখা হয়। যাচাই করা সম্ভব হয়নি—এমন তথ্যকে নিশ্চিত সত্য হিসেবে উপস্থাপন করা উচিত নয়।</p>
-
-<h2>সূত্র ও কৃতিত্ব</h2>
-
-<p>অন্য সংবাদমাধ্যম, সংবাদ সংস্থা, সরকারি নথি বা প্রকাশ্য উৎস থেকে তথ্য নেওয়া হলে প্রাসঙ্গিক ক্ষেত্রে উৎসের পরিচয় বা লিংক উল্লেখ করা হবে। অন্যের লেখা, ছবি বা ভিডিও অনুমতি ছাড়া নিজের কনটেন্ট হিসেবে প্রকাশ করা হবে না।</p>
-
-<h2>নিরপেক্ষতা ও স্বার্থের সংঘাত</h2>
-
-<p>সংবাদে সংশ্লিষ্ট পক্ষগুলোর বক্তব্য যথাসম্ভব অন্তর্ভুক্ত করার চেষ্টা করা হয়। ব্যক্তিগত, রাজনৈতিক বা বাণিজ্যিক স্বার্থ যেন সংবাদ উপস্থাপনাকে প্রভাবিত না করে, সে বিষয়ে সতর্ক থাকা হবে।</p>
-
-<h2>ভুল সংশোধন</h2>
-
-<p>প্রকাশিত সংবাদে ভুল পাওয়া গেলে পাঠকরা যোগাযোগের মাধ্যমে জানাতে পারেন। যাচাইয়ের পর প্রয়োজন হলে সংবাদ সংশোধন বা হালনাগাদ করা হবে। গুরুত্বপূর্ণ সংশোধনের বিষয়টি পাঠকের কাছে স্পষ্ট করার চেষ্টা করা হবে।</p>
-
-<h2>মতামত ও বিজ্ঞাপন</h2>
-
-<p>মতামতধর্মী লেখা, প্রচারমূলক উপাদান ও বিজ্ঞাপনকে সংবাদ হিসেবে বিভ্রান্তিকরভাবে উপস্থাপন করা হবে না। বিজ্ঞাপন প্রকাশের ক্ষেত্রে প্রযোজ্য আইন ও প্ল্যাটফর্ম নীতি মেনে চলা হবে।</p>
-
-<h2>পাঠকের অভিযোগ</h2>
-
-<p>সংবাদ সংশোধন, অধিকার, সূত্র বা সম্পাদনা সংক্রান্ত অভিযোগ জানাতে <a href="/?page=contact">যোগাযোগ পেজ</a> ব্যবহার করুন।</p>
-`
-},
-
-terms:{
-title:"Terms & Conditions",
-html:`
-<h1>ব্যবহারের শর্তাবলি (Terms &amp; Conditions)</h1>
-
-<p>প্রতিদিন বাংলাদেশ (Desh Bangla) ওয়েবসাইট ব্যবহার করার মাধ্যমে আপনি এই শর্তাবলি মেনে চলতে সম্মত হচ্ছেন। শর্তাবলিতে সম্মত না হলে ওয়েবসাইট ব্যবহার থেকে বিরত থাকুন।</p>
-
-<h2>কনটেন্টের ব্যবহার</h2>
-
-<p>এই ওয়েবসাইটে প্রকাশিত লেখা, ছবি, ভিডিও, লোগো ও অন্যান্য উপাদানের অধিকার সংশ্লিষ্ট অধিকারী বা উৎসের কাছে সংরক্ষিত থাকতে পারে। লিখিত অনুমতি ছাড়া কনটেন্ট পুনঃপ্রকাশ, বাণিজ্যিক ব্যবহার বা কপিরাইট লঙ্ঘন করা যাবে না। আইনসম্মত উদ্ধৃতির ক্ষেত্রে যথাযথ উৎস উল্লেখ করতে হবে।</p>
-
-<h2>তথ্যের যথার্থতা</h2>
-
-<p>আমরা প্রকাশিত তথ্য যথাসম্ভব নির্ভুল ও হালনাগাদ রাখার চেষ্টা করি। তবে সব তথ্য সবসময় সম্পূর্ণ, নির্ভুল বা সর্বশেষ—এমন নিশ্চয়তা দেওয়া হয় না। গুরুত্বপূর্ণ সিদ্ধান্ত নেওয়ার আগে সংশ্লিষ্ট প্রাথমিক বা সরকারি উৎস যাচাই করুন।</p>
-
-<h2>ব্যবহারকারীর আচরণ</h2>
-
-<p>ওয়েবসাইট ব্যবহার করে বেআইনি, মানহানিকর, প্রতারণামূলক, বিদ্বেষমূলক বা অন্যের অধিকার ক্ষুণ্ণ করে—এমন কোনো কাজ করা যাবে না। ওয়েবসাইটের নিরাপত্তা বা স্বাভাবিক কার্যক্রম ব্যাহত করার চেষ্টা করা নিষিদ্ধ।</p>
-
-<h2>বাহ্যিক লিংক</h2>
-
-<p>ওয়েবসাইটে তৃতীয় পক্ষের ওয়েবসাইটের লিংক থাকতে পারে। এসব সাইটের কনটেন্ট, নিরাপত্তা বা নীতিমালার জন্য প্রতিদিন বাংলাদেশ দায়ী নয়।</p>
-
-<h2>শর্তাবলির পরিবর্তন</h2>
-
-<p>প্রয়োজন অনুযায়ী এই শর্তাবলি পরিবর্তন বা হালনাগাদ করা হতে পারে। পরিবর্তিত শর্তাবলি এই পেজে প্রকাশের পর কার্যকর হবে।</p>
-
-<h2>যোগাযোগ</h2>
-
-<p>এই শর্তাবলি সম্পর্কে প্রশ্ন থাকলে <a href="/?page=contact">যোগাযোগ পেজে</a> যান।</p>
-
-<p><strong>সর্বশেষ হালনাগাদ:</strong> ১০ নভেম্বর ২০২৬</p>
-`
-}
+const infoPages = {
+  about: {
+    title:"আমাদের সম্পর্কে",
+    html:`
+      <h1>আমাদের সম্পর্কে</h1>
+      <p>প্রতিদিন বাংলাদেশ একটি অনলাইন সংবাদমাধ্যম। দেশের সর্বশেষ সংবাদ, জাতীয়, রাজনীতি, আন্তর্জাতিক, খেলাধুলা, বিনোদন, শিক্ষা, অর্থনীতি ও প্রযুক্তি বিষয়ক সংবাদ পাঠকদের কাছে পৌঁছে দেওয়াই আমাদের লক্ষ্য।</p>
+      <h2>আমাদের লক্ষ্য</h2>
+      <p>সঠিক, নিরপেক্ষ ও দায়িত্বশীল সংবাদ প্রকাশের মাধ্যমে পাঠকদের তথ্যসমৃদ্ধ করা আমাদের অঙ্গীকার। আমরা সংবাদ প্রকাশের ক্ষেত্রে তথ্য যাচাই, নির্ভরযোগ্য সূত্র এবং পাঠকের স্বার্থকে গুরুত্ব দিই।</p>
+      <h2>আমাদের অঙ্গীকার</h2>
+      <p>ভুল তথ্য এড়িয়ে চলা, সংবাদে ভারসাম্য বজায় রাখা এবং কোনো ভুল হলে তা সংশোধনের চেষ্টা করা আমাদের সম্পাদকীয় দায়িত্বের অংশ।</p>
+    `
+  },
+
+  contact: {
+    title:"যোগাযোগ",
+    html:`
+      <h1>যোগাযোগ</h1>
+
+      <p>প্রতিদিন বাংলাদেশে প্রকাশিত কোনো সংবাদ সম্পর্কে মতামত, তথ্য সংশোধনের অনুরোধ, অভিযোগ, সংবাদ প্রস্তাব বা সাধারণ যোগাযোগের জন্য আমাদের সঙ্গে যোগাযোগ করতে পারেন।</p>
+
+      <h2>কীভাবে যোগাযোগ করবেন</h2>
+
+      <p>আপনার বার্তায় সংশ্লিষ্ট সংবাদটির শিরোনাম ও লিংক উল্লেখ করুন। কোনো তথ্য সংশোধনের অনুরোধ করলে সঠিক তথ্যের পক্ষে নির্ভরযোগ্য সূত্র বা প্রমাণ যুক্ত করুন।</p>
+
+      <h2>আমাদের সঙ্গে যোগাযোগ</h2>
+
+      <div class="info-note">
+        <p><strong>ইমেইল:</strong> <a href="mailto:rashelahmed122@gmail.com">rashelahmed122@gmail.com</a></p>
+        <p><strong>ফোন:</strong> <a href="tel:+8801567906919">01567-906919</a></p>
+      </div>
+
+      <p>সংবাদ সংক্রান্ত তথ্য, মতামত, অভিযোগ বা সংশোধনের অনুরোধ জানাতে উপরের ইমেইল অথবা ফোন নম্বরে যোগাযোগ করুন।</p>
+    `
+  },
+
+  privacy: {
+    title:"গোপনীয়তা নীতি",
+    html:`
+      <h1>গোপনীয়তা নীতি</h1>
+      <p>প্রতিদিন বাংলাদেশ পাঠকদের গোপনীয়তাকে গুরুত্ব দেয়। এই ওয়েবসাইট ব্যবহার করার সময় আপনার তথ্য কীভাবে ব্যবহৃত হতে পারে, সে বিষয়ে এই নীতিমালায় সংক্ষেপে জানানো হয়েছে।</p>
+
+      <h2>তথ্য সংগ্রহ</h2>
+      <p>ওয়েবসাইট ব্যবহারের সময় ব্রাউজার, ডিভাইস, ভিজিটের সময় এবং ব্যবহারের ধরন সম্পর্কিত কিছু সাধারণ তথ্য স্বয়ংক্রিয়ভাবে সংগ্রহ হতে পারে। আপনি ইমেইল বা ফোনের মাধ্যমে যোগাযোগ করলে আপনার দেওয়া তথ্য যোগাযোগের প্রয়োজনে ব্যবহার করা হতে পারে।</p>
+
+      <h2>কুকিজ</h2>
+      <p>ওয়েবসাইটের কার্যকারিতা ও ব্যবহারকারীর অভিজ্ঞতা উন্নত করতে কুকিজ বা অনুরূপ প্রযুক্তি ব্যবহার করা হতে পারে। আপনার ব্রাউজার সেটিংস থেকে কুকিজ নিয়ন্ত্রণ করতে পারবেন।</p>
+
+      <h2>বিজ্ঞাপন</h2>
+      <p>ভবিষ্যতে এই ওয়েবসাইটে তৃতীয় পক্ষের বিজ্ঞাপন প্রদর্শিত হতে পারে। বিজ্ঞাপন প্রদানকারী প্রতিষ্ঠান তাদের নিজস্ব প্রযুক্তি ও নীতিমালা অনুযায়ী কুকিজ বা অনুরূপ প্রযুক্তি ব্যবহার করতে পারে।</p>
+
+      <h2>তৃতীয় পক্ষের ওয়েবসাইট</h2>
+      <p>আমাদের ওয়েবসাইটে অন্য ওয়েবসাইটের লিংক থাকতে পারে। সেই ওয়েবসাইটগুলোর গোপনীয়তা নীতির জন্য আমরা দায়ী নই।</p>
+
+      <h2>যোগাযোগ</h2>
+      <p>গোপনীয়তা নীতি সম্পর্কে কোনো প্রশ্ন থাকলে আমাদের ইমেইলে যোগাযোগ করুন: <a href="mailto:rashelahmed122@gmail.com">rashelahmed122@gmail.com</a></p>
+    `
+  },
+
+  editorial: {
+    title:"সম্পাদকীয় নীতিমালা",
+    html:`
+      <h1>সম্পাদকীয় নীতিমালা</h1>
+      <p>প্রতিদিন বাংলাদেশ দায়িত্বশীল ও পাঠকবান্ধব সংবাদ প্রকাশে প্রতিশ্রুতিবদ্ধ। সংবাদ প্রকাশের ক্ষেত্রে সত্যতা, নিরপেক্ষতা এবং জনস্বার্থকে গুরুত্ব দেওয়া হয়।</p>
+
+      <h2>তথ্য যাচাই</h2>
+      <p>সংবাদ প্রকাশের আগে যথাসম্ভব নির্ভরযোগ্য সূত্র থেকে তথ্য যাচাই করার চেষ্টা করা হয়। সন্দেহজনক বা অসমর্থিত তথ্যকে নিশ্চিত সংবাদ হিসেবে প্রকাশ করা উচিত নয়।</p>
+
+      <h2>নিরপেক্ষতা</h2>
+      <p>সংবাদে একাধিক পক্ষের বক্তব্য ও প্রাসঙ্গিক তথ্য তুলে ধরার চেষ্টা করা হয়। ব্যক্তিগত মতামতকে সংবাদ হিসেবে উপস্থাপন করা হয় না।</p>
+
+      <h2>ভুল সংশোধন</h2>
+      <p>প্রকাশিত সংবাদে কোনো ভুল ধরা পড়লে পাঠক আমাদের জানাতে পারেন। যাচাইয়ের পর প্রয়োজনীয় সংশোধন বা হালনাগাদ করা হতে পারে।</p>
+
+      <h2>পাঠকের মতামত</h2>
+      <p>পাঠকের মতামত ও অভিযোগকে গুরুত্ব দেওয়া হয়। তবে কোনো মতামত প্রকাশের ক্ষেত্রে শালীনতা ও আইনসম্মত বিষয় বিবেচনা করা হবে।</p>
+
+      <h2>যোগাযোগ</h2>
+      <p>সম্পাদকীয় বিষয়ে যোগাযোগ: <a href="mailto:rashelahmed122@gmail.com">rashelahmed122@gmail.com</a></p>
+    `
+  },
+
+  terms: {
+    title:"ব্যবহারের শর্তাবলি",
+    html:`
+      <h1>ব্যবহারের শর্তাবলি</h1>
+      <p>প্রতিদিন বাংলাদেশ ওয়েবসাইট ব্যবহার করার মাধ্যমে আপনি এই ওয়েবসাইটের সাধারণ ব্যবহারের শর্তাবলি মেনে নিচ্ছেন।</p>
+
+      <h2>কনটেন্ট ব্যবহার</h2>
+      <p>ওয়েবসাইটে প্রকাশিত সংবাদ, ছবি ও অন্যান্য কনটেন্টের স্বত্ব সংশ্লিষ্ট মালিক বা উৎসের হতে পারে। অনুমতি ছাড়া কোনো কনটেন্ট পুনঃপ্রকাশ বা বাণিজ্যিকভাবে ব্যবহার করার আগে প্রয়োজনীয় অনুমতি নিতে হবে।</p>
+
+      <h2>সঠিক ব্যবহার</h2>
+      <p>ওয়েবসাইটের কোনো অংশের ক্ষতি করা, অননুমোদিত প্রবেশের চেষ্টা করা বা অন্য ব্যবহারকারীর অভিজ্ঞতা ব্যাহত করা যাবে না।</p>
+
+      <h2>তথ্যের সীমাবদ্ধতা</h2>
+      <p>সংবাদ ও তথ্য যথাসম্ভব নির্ভুল রাখার চেষ্টা করা হলেও সব তথ্য সবসময় সম্পূর্ণ বা হালনাগাদ থাকার নিশ্চয়তা দেওয়া সম্ভব নয়। গুরুত্বপূর্ণ সিদ্ধান্ত নেওয়ার আগে নির্ভরযোগ্য সূত্র থেকে তথ্য যাচাই করুন।</p>
+
+      <h2>শর্তাবলি পরিবর্তন</h2>
+      <p>প্রয়োজন অনুযায়ী এই শর্তাবলি পরিবর্তন বা হালনাগাদ করা হতে পারে। পরিবর্তিত শর্তাবলি এই পৃষ্ঠায় প্রকাশ করা হবে।</p>
+
+      <h2>যোগাযোগ</h2>
+      <p>শর্তাবলি সম্পর্কে প্রশ্ন থাকলে <a href="mailto:rashelahmed122@gmail.com">rashelahmed122@gmail.com</a> ঠিকানায় যোগাযোগ করুন।</p>
+    `
+  }
 };
 
-const page=pages[pageKey];
-if(!page)return false;
+function renderInfoPage(pageKey) {
+  const page = infoPages[pageKey];
 
-document.title=page.title+" | প্রতিদিন বাংলাদেশ";
+  if (!page) {
+    mainContent.innerHTML = `<div class="empty">পৃষ্ঠাটি পাওয়া যায়নি।</div>`;
+    return;
+  }
 
-const descriptions={
-about:"প্রতিদিন বাংলাদেশ সম্পর্কে জানুন। আমাদের উদ্দেশ্য, সংবাদ প্রকাশ ও পাঠকদের প্রতি অঙ্গীকার।",
-contact:"প্রতিদিন বাংলাদেশের সঙ্গে যোগাযোগ, সংবাদ সংশোধন, মতামত ও অভিযোগ জানানোর তথ্য।",
-privacy:"প্রতিদিন বাংলাদেশ ওয়েবসাইটের গোপনীয়তা নীতি, Cookies ও বিজ্ঞাপন সংক্রান্ত তথ্য।",
-editorial:"প্রতিদিন বাংলাদেশের সংবাদ যাচাই, সম্পাদনা, সূত্র ও সংশোধন নীতি।",
-terms:"প্রতিদিন বাংলাদেশ ওয়েবসাইট ব্যবহারের শর্তাবলি।"
-};
+  document.title = page.title + " | প্রতিদিন বাংলাদেশ";
 
-let meta=document.querySelector('meta[name="description"]');
-if(meta)meta.setAttribute("content",descriptions[pageKey]);
-
-let canonical=document.querySelector('link[rel="canonical"]');
-if(canonical)canonical.setAttribute("href",location.href);
-
-app.innerHTML=`
-<article class="info-page">
-${page.html}
-<div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
-<p><a href="/">← হোমপেজে ফিরে যান</a></p>
-</article>`;
-
-return true;
+  mainContent.innerHTML = `
+    <section class="info-page">
+      ${page.html}
+    </section>
+  `;
 }
 
-/* =================================
-   নিউজ লোড করার আগের ফাংশন
-================================= */
+async function loadDetails(slug) {
+  mainContent.innerHTML = `<div class="loading">সংবাদ লোড হচ্ছে...</div>`;
 
-async function loadHome(){
-try{
-const response=await fetch("/api/news?limit=100",{
-cache:"no-store",
-headers:{"Accept":"application/json"}
+  try {
+    const response = await fetch(
+      `${API_BASE}/api/news/${encodeURIComponent(slug)}`
+    );
+
+    if (!response.ok) throw new Error("সংবাদ পাওয়া যায়নি");
+
+    const result = await response.json();
+    const news = result.news || result.data || result;
+
+    const title = getNewsTitle(news);
+    const image = getNewsImage(news);
+    const content = news.content || news.body || news.description || "";
+    const summary = getNewsSummary(news);
+    const category = news.category || "সংবাদ";
+    const author = news.author || news.author_name || "প্রতিদিন বাংলাদেশ";
+    const date = formatDate(news.created_at || news.date);
+    const video = news.video_url || news.video || "";
+
+    document.title = title + " | প্রতিদিন বাংলাদেশ";
+
+    const description = summary || content.slice(0,160);
+    const canonicalUrl = window.location.href;
+
+    document.querySelector('meta[name="description"]')
+      ?.setAttribute("content", description.slice(0,160));
+
+    document.querySelector('meta[property="og:title"]')
+      ?.setAttribute("content", title);
+
+    document.querySelector('meta[property="og:description"]')
+      ?.setAttribute("content", description.slice(0,160));
+
+    document.querySelector('meta[property="og:url"]')
+      ?.setAttribute("content", canonicalUrl);
+
+    if (image) {
+      let ogImage = document.querySelector('meta[property="og:image"]');
+      if (!ogImage) {
+        ogImage = document.createElement("meta");
+        ogImage.setAttribute("property","og:image");
+        document.head.appendChild(ogImage);
+      }
+      ogImage.setAttribute("content", image);
+    }
+
+    const pageUrl = encodeURIComponent(canonicalUrl);
+    const shareTitle = encodeURIComponent(title);
+
+    mainContent.innerHTML = `
+      <article class="details-page">
+        <span class="category">${esc(category)}</span>
+        <h1>${esc(title)}</h1>
+
+        <div class="article-meta">
+          প্রকাশের তারিখ: ${esc(date)}
+          | লেখক: ${esc(author)}
+        </div>
+
+        ${image ? `<img class="detail-image" src="${esc(image)}" alt="${esc(title)}">` : ""}
+
+        ${video ? `
+          <video class="article-video" controls>
+            <source src="${esc(video)}">
+            আপনার ব্রাউজার ভিডিও চালাতে পারছে না।
+          </video>
+        ` : ""}
+
+        <div class="article-body">${esc(content)}</div>
+
+        <div class="share-area">
+          <a class="share-facebook"
+             href="https://www.facebook.com/sharer/sharer.php?u=${pageUrl}"
+             target="_blank" rel="noopener">Facebook-এ শেয়ার</a>
+
+          <a class="share-whatsapp"
+             href="https://wa.me/?text=${shareTitle}%20${pageUrl}"
+             target="_blank" rel="noopener">WhatsApp-এ শেয়ার</a>
+
+          <button class="share-copy" id="copyNewsLink">লিংক কপি করুন</button>
+        </div>
+
+        <a class="read-more" href="/">প্রচ্ছদে ফিরে যান</a>
+      </article>
+    `;
+
+    document.getElementById("copyNewsLink").addEventListener("click", async function() {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        this.textContent = "লিংক কপি হয়েছে";
+      } catch (error) {
+        alert("লিংক কপি করা যায়নি। ব্রাউজার থেকে লিংক কপি করুন।");
+      }
+    });
+
+    addNewsStructuredData(news, canonicalUrl);
+
+  } catch (error) {
+    console.error(error);
+    mainContent.innerHTML = `
+      <div class="empty">
+        সংবাদটি পাওয়া যায়নি অথবা লোড করা সম্ভব হচ্ছে না।
+        <br><br>
+        <a class="read-more" href="/">প্রচ্ছদে ফিরে যান</a>
+      </div>
+    `;
+  }
+}
+
+function addNewsStructuredData(news, url) {
+  const oldScript = document.getElementById("newsStructuredData");
+  if (oldScript) oldScript.remove();
+
+  const title = getNewsTitle(news);
+  const image = getNewsImage(news);
+  const content = news.content || news.description || "";
+  const date = news.created_at || news.date || new Date().toISOString();
+
+  const structuredData = {
+    "@context":"https://schema.org",
+    "@type":"NewsArticle",
+    "headline":title,
+    "description":content.slice(0,200),
+    "image":image ? [image] : [],
+    "datePublished":date,
+    "dateModified":news.updated_at || date,
+    "author":{
+      "@type":"Organization",
+      "name":news.author || "প্রতিদিন বাংলাদেশ"
+    },
+    "publisher":{
+      "@type":"Organization",
+      "name":"প্রতিদিন বাংলাদেশ"
+    },
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id":url
+    }
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.id = "newsStructuredData";
+  script.textContent = JSON.stringify(structuredData);
+  document.head.appendChild(script);
+}
+
+function runSearch() {
+  const input = document.getElementById("searchInput");
+  const keyword = input.value.trim();
+
+  if (!keyword) return;
+
+  window.location.href = "/?search=" + encodeURIComponent(keyword);
+}
+
+document.getElementById("searchButton").addEventListener("click", runSearch);
+
+document.getElementById("searchInput").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") runSearch();
 });
 
-const data=await response.json();
+async function startPage() {
+  const newsSlug = getParam("news");
+  const page = getParam("page");
 
-if(!response.ok)throw new Error(data.error||"খবর লোড করা যায়নি।");
-
-allNews=Array.isArray(data)?data:
-Array.isArray(data.news)?data.news:
-Array.isArray(data.data)?data.data:[];
-
-const params=new URLSearchParams(location.search);
-const category=params.get("category");
-const query=params.get("q");
-
-if(category&&categories.includes(category))selectedCategory=category;
-
-if(query){
-searchText=query;
-document.getElementById("searchInput").value=query;
+  if (newsSlug) {
+    await loadDetails(newsSlug);
+  } else if (page) {
+    renderInfoPage(page);
+  } else {
+    await loadHome();
+  }
 }
 
-renderHome();
-
-}catch(error){
-console.error("Home Error:",error);
-
-app.innerHTML=`
-<div class="no-news">
-<h2>দুঃখিত!</h2>
-<p>${esc(error.message)}</p>
-<button class="category-btn" onclick="location.reload()">আবার চেষ্টা করুন</button>
-</div>`;
-}
-}
-
-async function loadDetails(){
-
-const match=location.pathname.match(/^\/news\/([^/]+)\/?$/);
-if(!match)return false;
-
-let slug;
-try{slug=decodeURIComponent(match[1]);}
-catch(e){slug=match[1];}
-
-app.innerHTML=`
-<div class="news-detail-page">
-<a href="/" class="back-news">← হোমপেজে ফিরে যান</a>
-<div class="loading">খবর লোড হচ্ছে...</div>
-</div>`;
-
-try{
-
-const response=await fetch("/api/news/"+encodeURIComponent(slug),{
-cache:"no-store",
-headers:{"Accept":"application/json"}
-});
-
-const result=await response.json();
-const news=result.news||result.data||result;
-
-if(!response.ok||!news||!news.title){
-throw new Error(result.error||"খবরটি পাওয়া যায়নি।");
-}
-
-const title=news.title;
-const image=newsImage(news);
-const summary=news.summary||"";
-const content=news.content||"বিস্তারিত তথ্য পাওয়া যায়নি।";
-const author=news.author||"ডেস্ক রিপোর্ট";
-const category=news.category||"জাতীয়";
-const date=dateText(news.created_at);
-const currentURL=location.href;
-
-document.title=title+" | প্রতিদিন বাংলাদেশ";
-
-/* প্রতিটি নিউজের জন্য আলাদা SEO description */
-const descriptionText=String(summary||content||title)
-.replace(/\s+/g," ").trim().slice(0,160);
-
-let descriptionTag=document.querySelector('meta[name="description"]');
-if(descriptionTag)descriptionTag.setAttribute("content",descriptionText);
-
-let canonicalTag=document.querySelector('link[rel="canonical"]');
-if(canonicalTag)canonicalTag.setAttribute("href",currentURL);
-
-function setMeta(property,value){
-let tag=document.querySelector('meta[property="'+property+'"]');
-
-if(!tag){
-tag=document.createElement("meta");
-tag.setAttribute("property",property);
-document.head.appendChild(tag);
-}
-
-tag.setAttribute("content",value);
-}
-
-setMeta("og:type","article");
-setMeta("og:title",title);
-setMeta("og:description",summary||title);
-setMeta("og:url",currentURL);
-setMeta("og:locale","bn_BD");
-
-if(image)setMeta("og:image",image);
-
-/* NewsArticle Structured Data */
-const oldSchema=document.getElementById("newsArticleSchema");
-if(oldSchema)oldSchema.remove();
-
-const schema=document.createElement("script");
-schema.type="application/ld+json";
-schema.id="newsArticleSchema";
-
-schema.textContent=JSON.stringify({
-"@context":"https://schema.org",
-"@type":"NewsArticle",
-"headline":title,
-"description":descriptionText,
-"datePublished":news.created_at||undefined,
-"dateModified":news.updated_at||news.created_at||undefined,
-"author":{
-"@type":"Person",
-"name":author
-},
-"publisher":{
-"@type":"Organization",
-"name":"প্রতিদিন বাংলাদেশ"
-},
-"mainEntityOfPage":{
-"@type":"WebPage",
-"@id":currentURL
-},
-"image":image?[image]:undefined
-});
-
-document.head.appendChild(schema);
-
-const facebookURL="https://www.facebook.com/sharer/sharer.php?u="+
-encodeURIComponent(currentURL);
-
-const whatsappURL="https://api.whatsapp.com/send?text="+
-encodeURIComponent(title+"\n"+currentURL);
-
-app.innerHTML=`
-<article class="news-detail-page">
-
-<a href="/" class="back-news">← হোমপেজে ফিরে যান</a>
-
-<div><span class="news-category">${esc(category)}</span></div>
-
-<h1>${esc(title)}</h1>
-
-<div class="news-meta">
-লেখক: ${esc(author)}
-${date?" | প্রকাশিত: "+esc(date):""}
-</div>
-
-${image?`
-<img class="news-cover" src="${esc(image)}"
-alt="${esc(title)}"
-onerror="this.style.display='none'">
-`:""}
-
-${summary?`<div class="news-summary">${esc(summary)}</div>`:""}
-
-<div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
-
-<div class="news-content">${esc(content)}</div>
-
-${videoHTML(news.video_url||news.videoUrl)}
-
-<div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
-
-<h3 class="section-heading">খবরটি শেয়ার করুন</h3>
-
-<div class="news-share">
-
-<a class="facebook-share" href="${facebookURL}"
-target="_blank" rel="noopener noreferrer">Facebook Share</a>
-
-<a class="whatsapp-share" href="${whatsappURL}"
-target="_blank" rel="noopener noreferrer">WhatsApp Share</a>
-
-<button type="button" class="copy-share" id="copyNewsLink">Copy Link</button>
-
-<button type="button" class="native-share" id="nativeNewsShare">Share</button>
-
-</div>
-
-<a href="/" class="back-news">← আরও খবর পড়ুন</a>
-
-</article>`;
-
-document.getElementById("copyNewsLink").addEventListener("click",async function(){
-
-const button=this;
-
-try{
-
-if(navigator.clipboard&&window.isSecureContext){
-await navigator.clipboard.writeText(currentURL);
-}else{
-
-const input=document.createElement("textarea");
-input.value=currentURL;
-input.style.position="fixed";
-input.style.opacity="0";
-
-document.body.appendChild(input);
-input.select();
-
-const copied=document.execCommand("copy");
-input.remove();
-
-if(!copied)throw new Error("Copy failed");
-}
-
-button.textContent="লিংক কপি হয়েছে";
-
-}catch(error){
-window.prompt("এই লিংকটি কপি করুন:",currentURL);
-}
-
-});
-
-document.getElementById("nativeNewsShare").addEventListener("click",async function(){
-
-if(!navigator.share){
-window.prompt("এই লিংকটি কপি করুন:",currentURL);
-return;
-}
-
-try{
-await navigator.share({
-title:title,
-text:summary||title,
-url:currentURL
-});
-}catch(error){
-if(error.name!=="AbortError")alert("শেয়ার করা সম্ভব হয়নি।");
-}
-
-});
-
-return true;
-
-}catch(error){
-
-console.error("Details Error:",error);
-
-app.innerHTML=`
-<div class="news-detail-page">
-<div class="no-news">
-<h2>দুঃখিত!</h2>
-<p>${esc(error.message)}</p>
-<a href="/" class="read-more">হোমপেজে ফিরে যান</a>
-</div>
-</div>`;
-
-return true;
-}
-}
-
-// সার্চ
-document.getElementById("searchForm").addEventListener("submit",function(event){
-
-event.preventDefault();
-
-searchText=document.getElementById("searchInput").value.trim();
-selectedCategory="সব খবর";
-
-if(location.pathname!=="/"){
-location.href="/"+(searchText?"?q="+encodeURIComponent(searchText):"");
-return;
-}
-
-updateURL();
-renderHome();
-
-});
-
-// পেজ চালু
-const requestedPage=new URLSearchParams(location.search).get("page");
-
-if(requestedPage&&renderInfoPage(requestedPage)){
-// প্রয়োজনীয় তথ্য পেজ দেখানো হয়েছে
-}else if(/^\/news\/[^/]+\/?$/.test(location.pathname)){
-loadDetails();
-}else{
-loadHome();
-}
-
-})();
+startPage();
 </script>
-
 </body>
 </html>
