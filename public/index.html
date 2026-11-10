@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -774,13 +773,13 @@ alt="${esc(title)}"
 onerror="this.style.display='none'">
 `:""}
 
-<!-- ছবির পর বিজ্ঞাপনের জায়গা -->
+<!-- ছবির পরেই বিজ্ঞাপনের জায়গা -->
 <div class="ad-box" aria-label="বিজ্ঞাপনের স্থান">বিজ্ঞাপনের স্থান</div>
 
-<!-- বিজ্ঞাপনের পর সংক্ষিপ্ত বিবরণ -->
+<!-- বিজ্ঞাপনের পরে সংক্ষিপ্ত বিবরণ -->
 ${summary?`<div class="news-summary">${esc(summary)}</div>`:""}
 
-<!-- সংবাদের বিস্তারিত লেখা -->
+<!-- মূল নিউজের বিস্তারিত লেখা -->
 <div class="news-content">${esc(content)}</div>
 
 ${videoHTML(news.video_url||news.videoUrl)}
